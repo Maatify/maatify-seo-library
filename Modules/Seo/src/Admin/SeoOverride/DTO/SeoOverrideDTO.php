@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatify\Seo\Admin\SeoOverride\DTO;
 
-final readonly class SeoOverrideDTO
+final readonly class SeoOverrideDTO implements \JsonSerializable
 {
     public function __construct(
         public int $id,
@@ -17,5 +17,21 @@ final readonly class SeoOverrideDTO
         public string $updatedAt,
         public ?string $deletedAt,
     ) {
+    }
+
+    /** @return array<string, mixed> */
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'entity_type' => $this->entityType,
+            'entity_id' => $this->entityId,
+            'language_id' => $this->languageId,
+            'meta_title' => $this->metaTitle,
+            'meta_description' => $this->metaDescription,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
+            'deleted_at' => $this->deletedAt,
+        ];
     }
 }
