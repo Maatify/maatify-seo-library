@@ -64,7 +64,7 @@ Repositories handle pure database operations (CRUD) without business logic forma
 ## Core Services
 
 ### Meta Generator Service
-The `MetaGeneratorService` orchestrates the assembly of `<title>`, `<meta>`, canonical, and hreflang tags per the current language and provided entity data.
+The `MetaGeneratorService` orchestrates the assembly of `<title>`, `<meta>` description, canonical, robots, OpenGraph, and Twitter tags per the current language and provided entity data.
 - **Responsibility**: It builds host-agnostic meta tags from host-provided defaults by accepting a `GenerateMetaTagsCommand` and returning a `MetaTagsDTO`.
 - **Override Fallback Behavior**: The service checks if a manual SEO override exists in `maa_seo_overrides` via the `SeoOverrideQueryService`. If an override exists for the specific entity and language, it replaces the default title and/or description. If the query service throws a `SeoNotFoundException`, it treats this as "no override" and falls back to the host-provided defaults.
 - **Canonical URL Resolution**: It determines the canonical URL first by checking the `canonicalUrl` property in the `GenerateMetaTagsCommand`. If that is not provided, it falls back to generating the URL via the `HostUrlGeneratorInterface` using the entity details.
