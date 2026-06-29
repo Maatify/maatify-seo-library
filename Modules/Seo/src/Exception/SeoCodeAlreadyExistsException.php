@@ -8,6 +8,6 @@ final class SeoCodeAlreadyExistsException extends \RuntimeException implements S
 {
     public static function forCode(string $code): self
     {
-        return new self("Seo record with code [{$code}] already exists.");
+        return new self("Seo record with code [{$code}] already exists.", SeoErrorCode::CODE_ALREADY_EXISTS);
     }
 }

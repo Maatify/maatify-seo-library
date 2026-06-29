@@ -8,6 +8,6 @@ final class SeoInvalidArgumentException extends \RuntimeException implements Seo
 {
     public static function emptyField(string $field): self
     {
-        return new self("Field [{$field}] must not be empty.");
+        return new self("Field [{$field}] must not be empty.", SeoErrorCode::INVALID_EMPTY_FIELD);
     }
 }

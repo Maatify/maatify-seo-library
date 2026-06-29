@@ -8,6 +8,6 @@ final class SeoConflictException extends \RuntimeException implements SeoExcepti
 {
     public static function dueToReason(string $reason): self
     {
-        return new self("Seo conflict occurred: {$reason}");
+        return new self("Seo conflict occurred: {$reason}", SeoErrorCode::CONFLICT_GENERIC);
     }
 }
