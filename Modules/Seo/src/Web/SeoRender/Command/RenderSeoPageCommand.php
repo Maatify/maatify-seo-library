@@ -10,7 +10,7 @@ use Maatify\Seo\Shared\DTO\Schema\BreadcrumbListDTO;
 final readonly class RenderSeoPageCommand
 {
     /**
-     * @param list<\JsonSerializable> $schemas
+     * @param array<mixed> $schemas
      */
     public function __construct(
         public string $entityType,

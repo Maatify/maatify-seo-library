@@ -12,7 +12,7 @@ use Maatify\Seo\Shared\DTO\Schema\JsonLdSchemaDTO;
 final readonly class SeoPagePayloadDTO implements \JsonSerializable
 {
     /**
-     * @param list<JsonLdSchemaDTO> $schemas
+     * @param array<mixed> $schemas
      */
     public function __construct(
         public MetaTagsDTO $metaTags,
