@@ -166,7 +166,7 @@ A PDO-based schema is required for specific sub-systems where persistence provid
   - **Phase 3A: Meta Generator (Complete):** Implement `MetaGeneratorService` with DTOs and database fallback logic.
   - **Phase 3B: JSON-LD Schema Generator (Complete):** Implement `SchemaGeneratorService` for structured data.
   - **Phase 3C: Redirect & Slug Services (Complete):** Implement `RedirectManagerService` and `SlugHistoryService`.
-- **Phase 4: Sitemap Generation (Pending)**
+- **Phase 4: Sitemap Generation (Complete)**
   Implement `SitemapGeneratorService` using `XMLWriter` to support dynamic sitemap index and language-specific XMLs.
 - **Phase 5: Documentation & Polish (In Progress)**
   Finalize `README.md`, `SEO_MODULE_REFERENCE.md`, ensure PHPStan level max passes natively.
