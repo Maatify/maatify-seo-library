@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - Unreleased
+- **Added:** Phase 7B (Usability & Rendering) Render Output DTOs (`SeoHeadHtmlDTO`) implemented and verified (see `docs/verification/PHASE_7B_RENDER_OUTPUT_DTOS_VERIFICATION_REPORT.md`).
 - **Added:** Phase 7A (Usability & Rendering) HTML rendering helpers (`SeoHeadHtmlRenderer`, etc.) implemented and verified (see `docs/verification/PHASE_7A_HTML_RENDERING_HELPERS_VERIFICATION_REPORT.md`).
 - **Added:** Phase 6D (Final Module Compliance Audit) completed and verified (see `docs/verification/PHASE_6D_FINAL_MODULE_COMPLIANCE_AUDIT_REPORT.md`).
 - **Added:** Phase 6C (Bootstrap/DI Full Wiring) implementation including `Bootstrap/SeoBindings.php` (see `docs/verification/PHASE_6C_BOOTSTRAP_DI_WIRING_VERIFICATION_REPORT.md`).

@@ -181,12 +181,15 @@ The Web layer provides website/frontend consumption services and DTOs. Following
 - **`Web/SeoRender/Service/SeoPageRenderService`**: Orchestrates the generation of the SEO page payload using Shared services (`MetaGeneratorService`, `SchemaGeneratorService`, etc.). It supports computing redirect decisions via `RedirectManagerService` and generating sitemap strings via `SitemapGeneratorService` if injected.
 
 ### HTML Rendering Helpers
-The Web layer includes optional HTML Rendering Helpers under `src/Web/Render/`. These renderers are framework-neutral, return pure PHP strings (HTML), and do not emit HTTP responses. They can be manually consumed by any host application or template engine to safely render SEO data.
+The Web layer includes optional HTML Rendering Helpers under `src/Web/Render/`. These renderers are framework-neutral, return pure PHP strings (HTML) or strictly-typed read-only DTOs, and do not emit HTTP responses. They can be manually consumed by any host application or template engine to safely render SEO data.
 - **`Web/Render/MetaTagsHtmlRenderer.php`**: Renders `<title>`, `<meta name="description">`, canonical URLs, and robots tags with safely escaped text and attributes.
 - **`Web/Render/OpenGraphHtmlRenderer.php`**: Renders `og:` metadata tags (`og:title`, `og:description`, `og:type`, `og:url`, `og:image`) with safely escaped properties and content.
 - **`Web/Render/TwitterCardHtmlRenderer.php`**: Renders `twitter:` metadata tags (`twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`) with safely escaped names and content.
 - **`Web/Render/JsonLdScriptRenderer.php`**: Safely encodes array or DTO structures into valid JSON and wraps them in `<script type="application/ld+json">` tags, mitigating XSS risks.
-- **`Web/Render/SeoHeadHtmlRenderer.php`**: A facade that orchestrates the above renderers to combine and return the complete SEO HTML head payload dynamically.
+- **`Web/Render/SeoHeadHtmlRenderer.php`**: A facade that orchestrates the above renderers to combine and return the complete SEO HTML head payload dynamically. Contains `renderDto()` and `renderPayloadDto()` which return a `SeoHeadHtmlDTO`. The existing string rendering API via `render()` and `renderPayload()` remains fully available.
+
+### Web Output DTOs
+- **`Web/DTO/SeoHeadHtmlDTO.php`**: A framework-neutral, final read-only DTO that implements `\JsonSerializable`. It separates rendered HTML into individual string sections (`metaHtml`, `openGraphHtml`, `twitterCardHtml`, `jsonLdHtml`) and provides a pre-combined `fullHtml` output, allowing host applications flexibility in rendering without requiring template engine coupling.
 
 ## Final Compliance and Audit
 The SEO module has successfully completed its final compliance audit, verifying the implementation of the Shared, Admin, Web, and Bootstrap layers.
