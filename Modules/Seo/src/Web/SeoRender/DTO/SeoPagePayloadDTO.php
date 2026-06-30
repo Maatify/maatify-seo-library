@@ -38,7 +38,7 @@ final readonly class SeoPagePayloadDTO implements \JsonSerializable
         return [
             'meta_tags' => $this->metaTags->jsonSerialize(),
             'schemas' => array_map(
-                static fn (JsonLdSchemaDTO $schema): array => $schema->jsonSerialize(),
+                static function (mixed $schema): array { /** @var JsonLdSchemaDTO $schema */ return $schema->jsonSerialize(); },
                 $this->schemas,
             ),
             'redirect_decision' => $this->redirectDecision?->jsonSerialize(),

@@ -10,8 +10,8 @@ composer require maatify/seo
 ```
 
 ## Implemented Layers
-Currently, the module has the following foundational layers implemented for the **Core/Shared SEO library** (Phases 1-5) and the **Admin Layer** (Phase 6A).
-*Note: The full SEO module is not complete yet. The Web layer and DI wiring are planned next. The module is not done until Web, DI, and final audit are complete.*
+Currently, the module has the following foundational layers implemented for the **Core/Shared SEO library** (Phases 1-5) the **Admin Layer** (Phase 6A), and the **Web Layer** (Phase 6B).
+*Note: The full SEO module is not complete yet. DI wiring and the final audit are planned next. The module is not done until DI wiring and the final audit are complete.*
 
 - **Phase 1 (Foundation - Core/Shared):** Base DTOs, Exceptions, Host Contracts.
 - **Phase 2A (Schema - Core/Shared):** Standalone SQL tables for slug history, redirects, and manual SEO overrides.
@@ -23,3 +23,4 @@ Currently, the module has the following foundational layers implemented for the 
 - **Phase 4 (Sitemap Generation - Core/Shared):** In-memory XML sitemap generation stream (URL sets and Sitemap Indexes) dynamically powered by strict DTOs.
 - **Phase 5 (Documentation & Polish - Core/Shared):** Final package documentation polish, validation, and release readiness verification.
 - **Phase 6A (Admin Layer):** Admin-specific command, query, and service classes for managing SEO overrides, redirects, and slug history.
+- **Phase 6B (Web Layer):** Implementation of host website consumption services and DTOs for frontend SEO data structures, operating entirely framework-agnostic.
