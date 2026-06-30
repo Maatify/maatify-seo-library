@@ -123,7 +123,7 @@ final class SeoBindings
 
     /**
      * @template T of object
-     * @param ServiceMap $services
+     * @param array<mixed> $services
      * @param class-string<T> $id
      * @return T
      */
@@ -143,7 +143,7 @@ final class SeoBindings
 
     /**
      * @template T of object
-     * @param ServiceMap $services
+     * @param array<mixed> $services
      * @param class-string<T> $id
      * @return T|null
      */

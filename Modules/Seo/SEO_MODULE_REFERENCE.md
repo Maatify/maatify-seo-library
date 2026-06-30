@@ -148,6 +148,14 @@ All schema generation is powered by strict, host-agnostic Data Transfer Objects 
 - **`OrganizationSchemaDTO`**: Represents `Organization` schema documenting constructor-provided values: `name`, `url`, `logoUrl`, and `sameAsUrls`.
 - **`ProductSchemaDTO`**: A robust representation of a `Product` schema documenting constructor-provided values: `name`, `description`, `sku`, `brandName`, and `additionalProperties` (which can be used by the host to supply offers, reviews, or other custom fields).
 
+## Bootstrap Layer
+The `Bootstrap/SeoBindings.php` class is the single shared binding entry point for the Shared, Admin, and Web layers.
+- **Methods**: It exposes `shared()`, `admin()`, `web()`, and `all()` methods which return associative arrays of class strings to callable dependency definitions (factories).
+- **Framework-neutral**: The bindings are entirely framework-neutral. They do not depend on Slim, Laravel, Symfony, PHP-DI, or any framework-specific containers. Host applications can adapt these definitions to any container by resolving dependencies using the same class/interface-string keys.
+- **Dependencies**: It keeps host-provided dependencies documented:
+  - Required: `PDO::class`
+  - Optional: `HostUrlGeneratorInterface::class`
+
 ## Service Layer
 Services manage the core business orchestration and throw standard `SeoNotFoundException` when entities are missing. They never perform SQL queries directly and strictly use constructor injection.
 
