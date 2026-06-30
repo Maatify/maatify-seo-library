@@ -25,6 +25,12 @@ final readonly class RedirectQueryService
         return $redirect;
     }
 
+    /** @return list<RedirectDTO> */
+    public function listByEntity(string $entityType, ?int $languageId = null, bool $includeDeleted = false): array
+    {
+        return $this->repository->findByEntity($entityType, $languageId, $includeDeleted);
+    }
+
     public function getActiveByRequestedSlug(string $entityType, int $languageId, string $requestedSlug): RedirectDTO
     {
         $redirect = $this->repository->findActiveByRequestedSlug($entityType, $languageId, $requestedSlug);

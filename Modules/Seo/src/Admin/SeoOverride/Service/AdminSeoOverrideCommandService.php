@@ -8,11 +8,11 @@ use Maatify\Seo\Admin\SeoOverride\Command\CreateSeoOverrideCommand as AdminCreat
 use Maatify\Seo\Admin\SeoOverride\Command\UpdateSeoOverrideCommand as AdminUpdateSeoOverrideCommand;
 use Maatify\Seo\Shared\Command\SeoOverride\CreateSeoOverrideCommand;
 use Maatify\Seo\Shared\Command\SeoOverride\UpdateSeoOverrideCommand;
-use Maatify\Seo\Shared\Service\SeoOverrideCommandService as SharedSeoOverrideCommandService;
+use Maatify\Seo\Shared\Service\SeoOverrideCommandService;
 
-final readonly class SeoOverrideCommandService
+final readonly class AdminSeoOverrideCommandService
 {
-    public function __construct(private SharedSeoOverrideCommandService $commandService)
+    public function __construct(private SeoOverrideCommandService $commandService)
     {
     }
 

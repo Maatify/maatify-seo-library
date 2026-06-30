@@ -6,11 +6,11 @@ namespace Maatify\Seo\Admin\SeoOverride\Service;
 
 use Maatify\Seo\Admin\SeoOverride\DTO\AdminSeoOverrideDTO;
 use Maatify\Seo\Shared\DTO\SeoOverride\SeoOverrideDTO;
-use Maatify\Seo\Shared\Service\SeoOverrideQueryService as SharedSeoOverrideQueryService;
+use Maatify\Seo\Shared\Service\SeoOverrideQueryService;
 
-final readonly class SeoOverrideQueryService
+final readonly class AdminSeoOverrideQueryService
 {
-    public function __construct(private SharedSeoOverrideQueryService $queryService)
+    public function __construct(private SeoOverrideQueryService $queryService)
     {
     }
 

@@ -68,6 +68,31 @@ final readonly class PdoRedirectRepository implements RedirectRepositoryInterfac
         return $row === false ? null : self::hydrate($row);
     }
 
+
+    /** @return list<RedirectDTO> */
+    public function findByEntity(string $entityType, ?int $languageId = null, bool $includeDeleted = false): array
+    {
+        $sql = 'SELECT * FROM maa_seo_redirects WHERE entity_type = :entity_type';
+        if ($languageId !== null) {
+            $sql .= ' AND language_id = :language_id';
+        }
+        if (! $includeDeleted) {
+            $sql .= ' AND deleted_at IS NULL';
+        }
+        $sql .= ' ORDER BY id DESC';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue('entity_type', $entityType);
+        if ($languageId !== null) {
+            $stmt->bindValue('language_id', $languageId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        /** @var list<array<string, mixed>> $rows */
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(static fn (array $row): RedirectDTO => self::hydrate($row), $rows);
+    }
+
     public function softDelete(int $id): bool
     {
         $stmt = $this->pdo->prepare('UPDATE maa_seo_redirects SET deleted_at = CURRENT_TIMESTAMP WHERE id = :id AND deleted_at IS NULL');
