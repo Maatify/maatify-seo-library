@@ -156,10 +156,14 @@ Services manage the core business orchestration and throw standard `SeoNotFoundE
 - **`RedirectQueryService`**: Retrieves redirect records, throwing module exceptions on failure.
 - **`SlugHistoryCommandService`**: Orchestrates `create`, `softDelete`, and `hardDelete` operations for slug history entries.
 - **`SlugHistoryQueryService`**: Retrieves slug history records.
-
-### Admin Layer
 - **`SeoOverrideCommandService`**: Orchestrates `create`, `update`, `softDelete`, and `hardDelete` operations for SEO overrides.
 - **`SeoOverrideQueryService`**: Retrieves SEO override records.
+
+### Admin Layer
+The Admin layer provides dedicated admin-facing services, DTOs, and commands for managing SEO capabilities in the backend. These classes are framework-agnostic, have no controllers, routes, or HTTP responses, and rely on constructor-injected Shared services for core logic without directly accessing the database.
+- **`Admin/SeoOverride/`**: Admin-facing management of SEO overrides via `AdminSeoOverrideCommandService` and `AdminSeoOverrideQueryService`.
+- **`Admin/Redirect/`**: Admin-facing management of SEO redirects via `AdminRedirectCommandService` and `AdminRedirectQueryService`.
+- **`Admin/SlugHistory/`**: Admin-facing management of slug history via `AdminSlugHistoryCommandService` and `AdminSlugHistoryQueryService`.
 
 ## Contracts (Host Interfaces)
 - `HostUrlGeneratorInterface`
