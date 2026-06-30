@@ -13,7 +13,6 @@ The review targeted all newly created Admin classes located exclusively under `s
 - `src/Admin/SeoOverride/Command/CreateSeoOverrideCommand.php`
 - `src/Admin/SeoOverride/Command/UpdateSeoOverrideCommand.php`
 - `src/Admin/SeoOverride/DTO/AdminSeoOverrideDTO.php`
-- `src/Admin/SeoOverride/DTO/SeoOverrideDTO.php`
 - `src/Admin/SeoOverride/Service/AdminSeoOverrideCommandService.php`
 - `src/Admin/SeoOverride/Service/AdminSeoOverrideQueryService.php`
 - `src/Admin/SlugHistory/Command/RecordAdminSlugHistoryCommand.php`
