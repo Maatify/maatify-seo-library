@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Maatify\Seo\Shared\DTO\Schema;
 
-final readonly class BreadcrumbSchemaDTO implements \JsonSerializable
+final readonly class JsonLdSchemaDTO implements \JsonSerializable
 {
+    /**
+     * @param array<string, mixed> $schema
+     */
     public function __construct(
-        public BreadcrumbListDTO $breadcrumbs,
+        private array $schema,
     ) {
     }
 
@@ -16,6 +19,6 @@ final readonly class BreadcrumbSchemaDTO implements \JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return $this->breadcrumbs->jsonSerialize();
+        return $this->schema;
     }
 }
