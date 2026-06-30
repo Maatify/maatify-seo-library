@@ -18,7 +18,7 @@ CREATE TABLE `maa_seo_redirects` (
   `target_entity_id` VARCHAR(36) DEFAULT NULL COMMENT 'Host-provided ID. No FK. Nullable if 410 Gone.',
   `http_status` SMALLINT UNSIGNED NOT NULL DEFAULT 301 COMMENT '301 for permanent redirect, 410 for gone',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation timestamp',
-  `deleted_at` DATETIME DEFAULT NULL COMMENT 'NULL = active, NOT NULL = soft-deleted.',
+  `deleted_at` DATETIME NULL COMMENT 'NULL = active, NOT NULL = soft-deleted.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_maa_seo_redir_unique` (`entity_type`, `language_id`, `requested_slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

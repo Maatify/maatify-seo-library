@@ -16,7 +16,7 @@ CREATE TABLE `maa_seo_overrides` (
   `meta_description` TEXT DEFAULT NULL COMMENT 'Manually overridden meta description',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation timestamp',
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last update timestamp',
-  `deleted_at` DATETIME DEFAULT NULL COMMENT 'NULL = active, NOT NULL = soft-deleted.',
+  `deleted_at` DATETIME NULL COMMENT 'NULL = active, NOT NULL = soft-deleted.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_maa_seo_override_unique` (`entity_type`, `entity_id`, `language_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
