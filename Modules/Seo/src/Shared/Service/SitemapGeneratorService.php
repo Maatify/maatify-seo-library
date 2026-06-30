@@ -13,53 +13,94 @@ use XMLWriter;
 final readonly class SitemapGeneratorService
 {
     /**
-     * @param list<SitemapUrlDTO> $urls
+     * @param array<mixed> $urls
      */
     public function generateUrlSitemap(array $urls): SitemapGenerationResultDTO
     {
-        if ($urls === []) {
-            throw SeoInvalidArgumentException::emptyField('urls');
-        }
+        $validUrls = $this->validateUrls($urls);
 
         $writer = $this->createWriter();
         $writer->startElement('urlset');
         $writer->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
-        if ($this->containsAlternates($urls)) {
+        if ($this->containsAlternates($validUrls)) {
             $writer->writeAttribute('xmlns:xhtml', 'http://www.w3.org/1999/xhtml');
         }
 
-        foreach ($urls as $url) {
+        foreach ($validUrls as $url) {
             $this->writeUrl($writer, $url);
         }
 
         $writer->endElement();
         $writer->endDocument();
 
-        return new SitemapGenerationResultDTO($this->flushWriter($writer), count($urls), 'urlset');
+        return new SitemapGenerationResultDTO($this->flushWriter($writer), count($validUrls), 'urlset');
     }
 
     /**
-     * @param list<SitemapIndexEntryDTO> $entries
+     * @param array<mixed> $entries
      */
     public function generateSitemapIndex(array $entries): SitemapGenerationResultDTO
     {
-        if ($entries === []) {
-            throw SeoInvalidArgumentException::emptyField('entries');
-        }
+        $validEntries = $this->validateEntries($entries);
 
         $writer = $this->createWriter();
         $writer->startElement('sitemapindex');
         $writer->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
-        foreach ($entries as $entry) {
+        foreach ($validEntries as $entry) {
             $this->writeIndexEntry($writer, $entry);
         }
 
         $writer->endElement();
         $writer->endDocument();
 
-        return new SitemapGenerationResultDTO($this->flushWriter($writer), count($entries), 'sitemapindex');
+        return new SitemapGenerationResultDTO($this->flushWriter($writer), count($validEntries), 'sitemapindex');
+    }
+
+
+    /**
+     * @param array<mixed> $urls
+     * @return list<SitemapUrlDTO>
+     */
+    private function validateUrls(array $urls): array
+    {
+        if ($urls === []) {
+            throw SeoInvalidArgumentException::emptyField('urls');
+        }
+
+        $validUrls = [];
+        foreach ($urls as $url) {
+            if (!$url instanceof SitemapUrlDTO) {
+                throw SeoInvalidArgumentException::emptyField('urls');
+            }
+
+            $validUrls[] = $url;
+        }
+
+        return $validUrls;
+    }
+
+    /**
+     * @param array<mixed> $entries
+     * @return list<SitemapIndexEntryDTO>
+     */
+    private function validateEntries(array $entries): array
+    {
+        if ($entries === []) {
+            throw SeoInvalidArgumentException::emptyField('entries');
+        }
+
+        $validEntries = [];
+        foreach ($entries as $entry) {
+            if (!$entry instanceof SitemapIndexEntryDTO) {
+                throw SeoInvalidArgumentException::emptyField('entries');
+            }
+
+            $validEntries[] = $entry;
+        }
+
+        return $validEntries;
     }
 
     /**
@@ -68,9 +109,6 @@ final readonly class SitemapGeneratorService
     private function containsAlternates(array $urls): bool
     {
         foreach ($urls as $url) {
-            if (!$url instanceof SitemapUrlDTO) {
-                throw SeoInvalidArgumentException::emptyField('urls');
-            }
             if ($url->alternates !== []) {
                 return true;
             }

@@ -12,7 +12,7 @@ final readonly class SitemapUrlDTO implements \JsonSerializable
     public array $alternates;
 
     /**
-     * @param list<SitemapAlternateUrlDTO> $alternates
+     * @param array<mixed> $alternates
      */
     public function __construct(
         public string $loc,
@@ -37,13 +37,16 @@ final readonly class SitemapUrlDTO implements \JsonSerializable
             throw SeoInvalidArgumentException::emptyField('priority');
         }
 
+        $validAlternates = [];
         foreach ($alternates as $alternate) {
             if (!$alternate instanceof SitemapAlternateUrlDTO) {
                 throw SeoInvalidArgumentException::emptyField('alternates');
             }
+
+            $validAlternates[] = $alternate;
         }
 
-        $this->alternates = array_values($alternates);
+        $this->alternates = $validAlternates;
     }
 
     public static function isValidLastmod(string $lastmod): bool
