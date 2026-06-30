@@ -165,6 +165,13 @@ The Admin layer provides dedicated admin-facing services, DTOs, and commands for
 - **`Admin/Redirect/`**: Admin-facing management of SEO redirects via `AdminRedirectCommandService` and `AdminRedirectQueryService`.
 - **`Admin/SlugHistory/`**: Admin-facing management of slug history via `AdminSlugHistoryCommandService` and `AdminSlugHistoryQueryService`.
 
+
+### Web Layer
+The Web layer provides website/frontend consumption services and DTOs. Following an approved exception, it uses `src/Web/` instead of the standard `src/Customer/` directory. These classes are strictly framework-agnostic and rely on Shared services via constructor injection. They do not access the database (no PDO), do not include controllers or routes, do not emit HTTP or PSR-7 responses, do not render templates, and do not output final HTML tags.
+- **`Web/SeoRender/Command/RenderSeoPageCommand`**: A final readonly command object containing data necessary to render an SEO page payload (such as entity details, defaults, robots, schemas, and breadcrumbs). It validates its input in the constructor.
+- **`Web/SeoRender/DTO/SeoPagePayloadDTO`**: A final readonly DTO (implementing `\JsonSerializable`) that wraps the computed meta tags, schemas, redirect decisions, and optional sitemap XML. It enforces that all inputs are valid.
+- **`Web/SeoRender/Service/SeoPageRenderService`**: Orchestrates the generation of the SEO page payload using Shared services (`MetaGeneratorService`, `SchemaGeneratorService`, etc.). It supports computing redirect decisions via `RedirectManagerService` and generating sitemap strings via `SitemapGeneratorService` if injected.
+
 ## Contracts (Host Interfaces)
 - `HostUrlGeneratorInterface`
 - `HostEntityProviderInterface`

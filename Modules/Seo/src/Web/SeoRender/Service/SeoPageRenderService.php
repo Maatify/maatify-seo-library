@@ -119,7 +119,9 @@ final readonly class SeoPageRenderService
             return [];
         }
 
-        return [$this->schemaGeneratorService->generateGraph($schemas)];
+        /** @var list<\JsonSerializable> $schemasList */
+        $schemasList = array_values($schemas);
+        return [$this->schemaGeneratorService->generateGraph($schemasList)];
     }
 
     private function requireSitemapGenerator(): SitemapGeneratorService
