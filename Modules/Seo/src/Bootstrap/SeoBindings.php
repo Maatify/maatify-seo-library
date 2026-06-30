@@ -29,8 +29,8 @@ use Maatify\Seo\Shared\Service\SlugHistoryCommandService;
 use Maatify\Seo\Shared\Service\SlugHistoryQueryService;
 use Maatify\Seo\Shared\Service\SlugHistoryService;
 use Maatify\Seo\Web\SeoRender\Service\SeoPageRenderService;
+use Maatify\Seo\Exception\SeoConflictException;
 use PDO;
-use RuntimeException;
 
 /**
  * Framework-neutral SEO dependency definitions.
@@ -130,12 +130,12 @@ final class SeoBindings
     private static function get(array $services, string $id): object
     {
         if (! isset($services[$id])) {
-            throw new RuntimeException('Missing SEO binding dependency [' . $id . '].');
+            throw SeoConflictException::dueToReason('Missing SEO binding dependency [' . $id . '].');
         }
 
         $service = $services[$id];
         if (! $service instanceof $id) {
-            throw new RuntimeException('SEO binding dependency [' . $id . '] has an invalid instance type.');
+            throw SeoConflictException::dueToReason('SEO binding dependency [' . $id . '] has an invalid instance type.');
         }
 
         return $service;
