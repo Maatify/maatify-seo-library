@@ -10,7 +10,7 @@ composer require maatify/seo
 ```
 
 ## Implemented Layers
-Currently, the module has the following foundational layers implemented (Phases 1-3A):
+Currently, the module has the following foundational layers implemented:
 - **Phase 1 (Foundation):** Base DTOs, Exceptions, Host Contracts.
 - **Phase 2A (Schema):** Standalone SQL tables for slug history, redirects, and manual SEO overrides.
 - **Phase 2B (Repositories):** PDO implementations for persistence layers without ORMs.
@@ -18,3 +18,4 @@ Currently, the module has the following foundational layers implemented (Phases 
 - **Phase 3A (Meta Generator):** Logic to assemble and orchestrate standard HTML Meta tags, merging host-provided defaults with manual database overrides in a framework-agnostic way.
 - **Phase 3B (JSON-LD Schema Generator):** Standalone service providing host-agnostic and framework-agnostic structured data generation for SEO (e.g., Breadcrumbs, Products) via strictly typed DTOs.
 - **Phase 3C (Redirect & Slug Services):** Core logic for resolving SEO redirects and managing slug histories, maintaining framework independence by returning DTOs rather than HTTP responses.
+- **Phase 4 (Sitemap Generation):** In-memory XML sitemap generation stream (URL sets and Sitemap Indexes) dynamically powered by strict DTOs.

@@ -98,6 +98,19 @@ The `MetaGeneratorService` orchestrates the assembly of `<title>`, `<meta>` desc
   - `twitterTitle` (?string)
   - `twitterDescription` (?string)
 
+### Sitemap Generator Service
+The `SitemapGeneratorService` generates valid XML strings for sitemap indexes and URL sets using `XMLWriter`.
+- **Responsibility**: It is fully host-agnostic and framework-agnostic. It accepts arrays of strict DTOs and returns a generated XML string in memory. The service contains **no SQL, no repository access, no host data fetching, no file writing, and no HTTP response generation**.
+- **`generateUrlSitemap()` Behavior**: Accepts a list of `SitemapUrlDTO` instances and returns a `SitemapGenerationResultDTO` containing the URL sitemap XML (`urlset`). It automatically adds the XHTML namespace if any `SitemapUrlDTO` contains alternate hreflang links.
+- **`generateSitemapIndex()` Behavior**: Accepts a list of `SitemapIndexEntryDTO` instances and returns a `SitemapGenerationResultDTO` containing the sitemap index XML (`sitemapindex`).
+
+### Sitemap DTOs
+All inputs to the sitemap generator are strictly validated `final readonly` DTOs.
+- **`SitemapUrlDTO`**: Represents a single `<url>` entry. Contains `loc`, optional `lastmod`, `changefreq`, `priority`, and a list of `SitemapAlternateUrlDTO` instances for hreflang links.
+- **`SitemapAlternateUrlDTO`**: Represents a single `<xhtml:link>` hreflang alternate. Contains `hreflang` and `url`.
+- **`SitemapIndexEntryDTO`**: Represents a single `<sitemap>` entry in a sitemap index. Contains `loc` and optional `lastmod`.
+- **`SitemapGenerationResultDTO`**: Represents the result of a generation operation. Contains the full `xml` string, the `entryCount` (exposed as `entry_count` in JSON serialization), and the `type` (either `urlset` or `sitemapindex`).
+
 ### Redirect and Slug Management
 - **`RedirectManagerService`**: Orchestrates redirect decisions without directly accessing the database (uses `RedirectQueryService` and `RedirectCommandService`). It accepts a `ResolveRedirectCommand` and returns a `RedirectDecisionDTO`. It does not emit HTTP responses, does not perform framework routing, and generates target URLs exclusively via `HostUrlGeneratorInterface`. Contains no SQL.
 - **`SlugHistoryService`**: Manages entity slug history and optional redirect creation. Uses `SlugHistoryQueryService`, `SlugHistoryCommandService`, and optional `RedirectCommandService` exclusively through constructor injection. Redirect creation is optional and only happens when `RecordSlugChangeCommand::createRedirect` is true and `RedirectCommandService` is available. Contains no SQL and no direct repository access.
@@ -137,6 +150,5 @@ Services manage the core business orchestration and throw standard `SeoNotFoundE
 
 ## Intentionally Not Implemented (Pending Phases)
 - **Redirect resolver logic**: Routing decisions (evaluating a request against redirects) belong to the consuming framework and are not implemented yet.
-- **Sitemap generation logic**: Streaming XML dynamically will be implemented in a dedicated phase due to memory constraints and is not implemented yet.
 - **Controllers/framework integration**: Kept decoupled to remain framework-agnostic and are not implemented yet.
 - **Host-specific product/category logic**: Domain-specific logic remains in the host module via interfaces.
