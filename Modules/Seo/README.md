@@ -16,3 +16,4 @@ Currently, the module has the following foundational layers implemented (Phases 
 - **Phase 2B (Repositories):** PDO implementations for persistence layers without ORMs.
 - **Phase 2C (Services):** Core domain logic orchestration, utilizing constructor injection and strict module exceptions.
 - **Phase 3A (Meta Generator):** Logic to assemble and orchestrate standard HTML Meta tags, merging host-provided defaults with manual database overrides in a framework-agnostic way.
+- **Phase 3B (JSON-LD Schema Generator):** Standalone service providing host-agnostic and framework-agnostic structured data generation for SEO (e.g., Breadcrumbs, Products) via strictly typed DTOs.
