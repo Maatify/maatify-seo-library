@@ -3,7 +3,9 @@
 Complete API reference and design rules for the Maatify SEO library.
 
 ## Current Module Structure
-The module is divided into Admin, Shared, Customer (pending), and Bootstrap components, ensuring clean boundaries between persistence, business logic, and presentation.
+The module is divided into Shared, Admin (planned), and Web (planned) components, ensuring clean boundaries between persistence, business logic, and presentation.
+
+**Note:** For the SEO library, `src/Web/` is the approved layer name replacing the standard `Customer/` layer. `src/Web/` is strictly for host website consumption services and DTOs. It does not include controllers, routes, HTTP responses, or framework integration.
 
 ```text
 Modules/Seo/
@@ -14,7 +16,19 @@ Modules/Seo/
 │   └── maa_seo_slug_history.sql
 └── src/
     ├── Admin/
-    │   └── SeoOverride/
+    │   ├── Redirect/
+    │   │   ├── Command/
+    │   │   ├── Contract/
+    │   │   ├── DTO/
+    │   │   ├── Infrastructure/Repository/
+    │   │   └── Service/
+    │   ├── SeoOverride/
+    │   │   ├── Command/
+    │   │   ├── Contract/
+    │   │   ├── DTO/
+    │   │   ├── Infrastructure/Repository/
+    │   │   └── Service/
+    │   └── SlugHistory/
     │       ├── Command/
     │       ├── Contract/
     │       ├── DTO/
@@ -29,12 +43,16 @@ Modules/Seo/
     │   ├── SeoExceptionInterface.php
     │   ├── SeoInvalidArgumentException.php
     │   └── SeoNotFoundException.php
-    └── Shared/
-        ├── Command/
-        ├── Contract/
-        ├── DTO/
-        ├── Infrastructure/Persistence/
-        └── Service/
+    ├── Shared/
+    │   ├── Command/
+    │   ├── Contract/
+    │   ├── DTO/
+    │   ├── Infrastructure/Persistence/
+    │   └── Service/
+    └── Web/
+        └── SeoRender/
+            ├── DTO/
+            └── Service/
 ```
 
 ## Schema Tables
