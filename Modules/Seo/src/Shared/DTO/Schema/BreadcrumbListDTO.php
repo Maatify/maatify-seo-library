@@ -17,7 +17,7 @@ final readonly class BreadcrumbListDTO implements \IteratorAggregate, \JsonSeria
     private array $items;
 
     /**
-     * @param list<BreadcrumbItemDTO> $items
+     * @param array<mixed> $items
      */
     public function __construct(array $items)
     {
@@ -25,13 +25,15 @@ final readonly class BreadcrumbListDTO implements \IteratorAggregate, \JsonSeria
             throw SeoInvalidArgumentException::emptyField('items');
         }
 
+        $validItems = [];
         foreach ($items as $item) {
             if (!$item instanceof BreadcrumbItemDTO) {
                 throw SeoInvalidArgumentException::emptyField('items');
             }
+            $validItems[] = $item;
         }
 
-        $this->items = $items;
+        $this->items = $validItems;
     }
 
     /**

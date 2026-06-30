@@ -48,7 +48,7 @@ final readonly class OrganizationSchemaDTO implements \JsonSerializable
             $schema['logo'] = trim($this->logoUrl);
         }
         if ($this->sameAsUrls !== []) {
-            $schema['sameAs'] = array_values(array_map('trim', $this->sameAsUrls));
+            $schema['sameAs'] = array_map('trim', $this->sameAsUrls);
         }
 
         return $schema;
