@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Maatify\Seo\Admin\SeoOverride\Contract;
+namespace Maatify\Seo\Shared\Contract;
 
-use Maatify\Seo\Admin\SeoOverride\Command\CreateSeoOverrideCommand;
-use Maatify\Seo\Admin\SeoOverride\Command\UpdateSeoOverrideCommand;
-use Maatify\Seo\Admin\SeoOverride\DTO\SeoOverrideDTO;
+use Maatify\Seo\Shared\Command\SeoOverride\CreateSeoOverrideCommand;
+use Maatify\Seo\Shared\Command\SeoOverride\UpdateSeoOverrideCommand;
+use Maatify\Seo\Shared\DTO\SeoOverride\SeoOverrideDTO;
 
 interface SeoOverrideRepositoryInterface
 {
@@ -14,6 +14,8 @@ interface SeoOverrideRepositoryInterface
     public function update(UpdateSeoOverrideCommand $command): bool;
     public function findById(int $id): ?SeoOverrideDTO;
     public function findActiveForEntity(string $entityType, string $entityId, int $languageId): ?SeoOverrideDTO;
+    /** @return list<SeoOverrideDTO> */
+    public function findByEntity(string $entityType, string $entityId, ?int $languageId = null, bool $includeDeleted = false): array;
     public function softDelete(int $id): bool;
     public function hardDelete(int $id): bool;
 }

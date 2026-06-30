@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Maatify\Seo\Admin\SeoOverride\Infrastructure\Repository;
+namespace Maatify\Seo\Shared\Infrastructure\Persistence;
 
-use Maatify\Seo\Admin\SeoOverride\Command\CreateSeoOverrideCommand;
-use Maatify\Seo\Admin\SeoOverride\Command\UpdateSeoOverrideCommand;
-use Maatify\Seo\Admin\SeoOverride\Contract\SeoOverrideRepositoryInterface;
-use Maatify\Seo\Admin\SeoOverride\DTO\SeoOverrideDTO;
+use Maatify\Seo\Shared\Command\SeoOverride\CreateSeoOverrideCommand;
+use Maatify\Seo\Shared\Command\SeoOverride\UpdateSeoOverrideCommand;
+use Maatify\Seo\Shared\Contract\SeoOverrideRepositoryInterface;
+use Maatify\Seo\Shared\DTO\SeoOverride\SeoOverrideDTO;
 use Maatify\Seo\Exception\SeoCodeAlreadyExistsException;
 use PDO;
 
@@ -64,6 +64,32 @@ final readonly class PdoSeoOverrideRepository implements SeoOverrideRepositoryIn
         /** @var array<string, mixed>|false $row */
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row === false ? null : self::hydrate($row);
+    }
+
+
+    /** @return list<SeoOverrideDTO> */
+    public function findByEntity(string $entityType, string $entityId, ?int $languageId = null, bool $includeDeleted = false): array
+    {
+        $sql = 'SELECT * FROM maa_seo_overrides WHERE entity_type = :entity_type AND entity_id = :entity_id';
+        if ($languageId !== null) {
+            $sql .= ' AND language_id = :language_id';
+        }
+        if (! $includeDeleted) {
+            $sql .= ' AND deleted_at IS NULL';
+        }
+        $sql .= ' ORDER BY id DESC';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue('entity_type', $entityType);
+        $stmt->bindValue('entity_id', $entityId);
+        if ($languageId !== null) {
+            $stmt->bindValue('language_id', $languageId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        /** @var list<array<string, mixed>> $rows */
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(static fn (array $row): SeoOverrideDTO => self::hydrate($row), $rows);
     }
 
     public function softDelete(int $id): bool

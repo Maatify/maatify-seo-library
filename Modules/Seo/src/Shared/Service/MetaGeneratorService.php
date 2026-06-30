@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatify\Seo\Shared\Service;
 
-use Maatify\Seo\Admin\SeoOverride\Service\SeoOverrideQueryService;
+use Maatify\Seo\Shared\Service\SeoOverrideQueryService;
 use Maatify\Seo\Exception\SeoNotFoundException;
 use Maatify\Seo\Shared\Command\GenerateMetaTagsCommand;
 use Maatify\Seo\Shared\Contract\HostUrlGeneratorInterface;

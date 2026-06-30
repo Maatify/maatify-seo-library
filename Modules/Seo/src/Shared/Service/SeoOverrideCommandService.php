@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Maatify\Seo\Admin\SeoOverride\Service;
+namespace Maatify\Seo\Shared\Service;
 
-use Maatify\Seo\Admin\SeoOverride\Command\CreateSeoOverrideCommand;
-use Maatify\Seo\Admin\SeoOverride\Command\UpdateSeoOverrideCommand;
-use Maatify\Seo\Admin\SeoOverride\Contract\SeoOverrideRepositoryInterface;
 use Maatify\Seo\Exception\SeoNotFoundException;
+use Maatify\Seo\Shared\Command\SeoOverride\CreateSeoOverrideCommand;
+use Maatify\Seo\Shared\Command\SeoOverride\UpdateSeoOverrideCommand;
+use Maatify\Seo\Shared\Contract\SeoOverrideRepositoryInterface;
 
 final readonly class SeoOverrideCommandService
 {
