@@ -192,7 +192,8 @@ The SEO module has successfully completed its final compliance audit, verifying 
 - `HostEntityProviderInterface`
 - `HostSearchContextInterface`
 
-## Intentionally Not Implemented (Pending Phases)
-- **Redirect resolver logic**: Routing decisions (evaluating a request against redirects) belong to the consuming framework and are not implemented yet.
-- **Controllers/framework integration**: Kept decoupled to remain framework-agnostic and are not implemented yet.
-- **Host-specific product/category logic**: Domain-specific logic remains in the host module via interfaces.
+## Out of Scope / Host Responsibilities
+The SEO module is complete as a standalone library. The following items are intentionally omitted because the module is strictly framework-neutral and host-agnostic. These are not missing phases and do not block module completeness:
+- **Redirect resolver logic**: Framework routing decisions (evaluating an HTTP request against redirects and emitting a 301/410 response) belong entirely to the consuming host application or framework router.
+- **Controllers/framework integration**: Controllers, routes, and HTTP integration are intentionally excluded to keep the module fully decoupled from any specific framework (like Slim, Laravel, or Symfony).
+- **Host-specific product/category logic**: Domain-specific business logic for products, categories, or other entities remains strictly in the host application and is integrated via standard interfaces (contracts).

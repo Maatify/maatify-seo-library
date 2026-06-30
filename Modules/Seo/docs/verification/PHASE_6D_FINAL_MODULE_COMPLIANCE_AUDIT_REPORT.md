@@ -12,6 +12,7 @@ The entire SEO module was audited against the Maatify module building standards,
 
 ## 3. Validation Command Results
 - `composer validate --strict`: Passed natively.
+- `composer install`: Passed
 - `vendor/bin/phpstan analyse`: Passed (0 errors at max level natively).
 - `find src -name "*.php" -print0 | xargs -0 -n1 php -l`: Passed (no syntax errors).
 
