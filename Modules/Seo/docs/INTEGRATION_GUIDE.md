@@ -20,7 +20,7 @@ To keep your application decoupled and testable, follow this data flow:
 
 1.  **Request Handling:** The framework's route or controller receives the HTTP request.
 2.  **Data Preparation:** The controller calls your host's internal services to fetch the necessary page/product data.
-3.  **SEO Generation:** The controller passes this data into the SEO library (e.g., using `FluentSeoBuilder` or `SeoPageRenderService`) to build the DTOs or rendered HTML output.
+3.  **SEO Generation:** The controller passes this data into the SEO library (e.g., using `FluentSeoBuilder` or `SeoHeadHtmlRenderer`) to build the DTOs or rendered HTML output.
 4.  **Template Rendering:** The controller passes the final SEO output (as a string or a DTO) to the template engine.
 5.  **Response:** The controller sends the template output in an HTTP response.
 
