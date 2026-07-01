@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - Unreleased
+- **Added:** Implementation of Phase 7D Optional Spatie Schema Integration to provide a framework-neutral adapter for `spatie/schema-org`.
 - **Added:** Implementation of Phase 7C Fluent SEO Builder to provide a framework-neutral fluent interface for dynamic output construction.
 - **Added:** Phase 7B (Usability & Rendering) Render Output DTOs (`SeoHeadHtmlDTO`) implemented and verified (see `docs/verification/PHASE_7B_RENDER_OUTPUT_DTOS_VERIFICATION_REPORT.md`).
 - **Added:** Phase 7A (Usability & Rendering) HTML rendering helpers (`SeoHeadHtmlRenderer`, etc.) implemented and verified (see `docs/verification/PHASE_7A_HTML_RENDERING_HELPERS_VERIFICATION_REPORT.md`).

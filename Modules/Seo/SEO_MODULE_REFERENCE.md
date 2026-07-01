@@ -190,7 +190,11 @@ The Web layer includes optional HTML Rendering Helpers under `src/Web/Render/`. 
 
 ### Fluent Output Builder
 The Web layer includes a framework-neutral fluent output builder under `src/Web/Builder/`.
-- **`Web/Builder/FluentSeoBuilder.php`**: An instance-based (no static global state) builder that provides a fluent interface for configuring SEO attributes (`title()`, `description()`, OpenGraph, Twitter, and schemas). It validates input natively and can build a `MetaTagsDTO`, render a plain string via `SeoHeadHtmlRenderer`, or render a `SeoHeadHtmlDTO`. It accepts JSON-LD schemas as `JsonLdSchemaDTO` objects or associative arrays. Existing Phase 7A/7B APIs remain fully available.
+- **`Web/Builder/FluentSeoBuilder.php`**: An instance-based (no static global state) builder that provides a fluent interface for configuring SEO attributes (`title()`, `description()`, OpenGraph, Twitter, and schemas). It validates input natively and can build a `MetaTagsDTO`, render a plain string via `SeoHeadHtmlRenderer`, or render a `SeoHeadHtmlDTO`. It accepts JSON-LD schemas as `JsonLdSchemaDTO` objects or associative arrays. The method `spatieSchema(object $schema)` is available to optionally convert and add Spatie schema objects directly to the builder. Existing Phase 7A/7B APIs remain fully available.
+
+### Optional Spatie Schema Integration
+The Web layer provides a dedicated adapter for optionally converting Spatie schema objects to native JSON-LD DTOs.
+- **`Web/Schema/SpatieSchemaAdapter.php`**: A framework-neutral bridge that provides `supports(object $schema): bool` and `toJsonLdSchemaDTO(object $schema): JsonLdSchemaDTO` functionality. The integration is completely optional; `spatie/schema-org` is only a suggested dependency. The adapter uses runtime checks (e.g. `method_exists`) so no hard dependencies on Spatie classes are imported or required by production code. Existing Phase 7A/7B/7C APIs remain fully available and unaltered.
 
 ### Web Output DTOs
 - **`Web/DTO/SeoHeadHtmlDTO.php`**: A framework-neutral, final read-only DTO that implements `\JsonSerializable`. It separates rendered HTML into individual string sections (`metaHtml`, `openGraphHtml`, `twitterCardHtml`, `jsonLdHtml`) and provides a pre-combined `fullHtml` output, allowing host applications flexibility in rendering without requiring template engine coupling.
