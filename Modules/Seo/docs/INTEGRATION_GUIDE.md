@@ -211,6 +211,7 @@ Sitemaps require the host application to configure the route, set the correct HT
 ```php
 // Example in a basic framework or plain PHP
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapAlternateUrlDTO;
+use Maatify\Seo\Shared\DTO\Sitemap\SitemapImageDTO;
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapUrlDTO;
 use Maatify\Seo\Web\Sitemap\SitemapXmlStringRenderer;
 
@@ -224,13 +225,16 @@ $sitemapUrls = [
         alternates: [
             new SitemapAlternateUrlDTO('en', 'https://example.com/en'),
             new SitemapAlternateUrlDTO('es', 'https://example.com/es')
+        ],
+        images: [
+            new SitemapImageDTO('https://example.com/image.jpg', 'Hero Image')
         ]
     ),
     new SitemapUrlDTO('https://example.com/about', '2023-09-15', 'monthly', 0.8)
 ];
 
 // 2. SEO library generates the XML string.
-// If any alternates are provided, the xmlns:xhtml namespace is automatically added.
+// If any alternates or images are provided, the xmlns:xhtml and xmlns:image namespaces are automatically added.
 $renderer = new SitemapXmlStringRenderer();
 $xmlString = $renderer->renderUrlSet($sitemapUrls);
 

@@ -192,6 +192,7 @@ A PDO-based schema is required for specific sub-systems where persistence provid
 - **Phase 10: Sitemap Enhancements**
   - **Phase 10A: Sitemap Index String Renderer (Complete):** Helper to optionally generate plain string output directly from sitemap index commands.
   - **Phase 10B: Hreflang / Alternate URL Support (Complete):** Enhance Web string helper to support `xhtml:link` alternate URLs for multi-language indexing.
+  - **Phase 10C: Image Sitemap Support (Complete):** Enhance Web string helper to support `image:image` tags and Google's image sitemap schema.
 
 ## 11. Risks / Decisions that Need Approval Before Coding
 

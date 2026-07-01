@@ -200,16 +200,17 @@ echo $builder->render();
 
 ## 7. Sitemap XML String Example
 
-To easily render sitemap entries to XML strings without modifying core services, the library provides the `SitemapXmlStringRenderer`. It supports rendering both basic URLs and URLs with alternate hreflang tags for multi-language indexing.
+To easily render sitemap entries to XML strings without modifying core services, the library provides the `SitemapXmlStringRenderer`. It supports rendering basic URLs, alternate hreflang tags for multi-language indexing, and Google image sitemap definitions.
 
 ```php
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapAlternateUrlDTO;
+use Maatify\Seo\Shared\DTO\Sitemap\SitemapImageDTO;
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapUrlDTO;
 use Maatify\Seo\Web\Sitemap\SitemapXmlStringRenderer;
 
 $renderer = new SitemapXmlStringRenderer();
 
-// Example with SitemapUrlDTO and Alternate URLs (Hreflang)
+// Example with SitemapUrlDTO, Alternate URLs (Hreflang), and Images
 $urlDto = new SitemapUrlDTO(
     loc: 'https://example.com/en/page-1',
     lastmod: '2023-10-01',
@@ -218,17 +219,33 @@ $urlDto = new SitemapUrlDTO(
     alternates: [
         new SitemapAlternateUrlDTO('en', 'https://example.com/en/page-1'),
         new SitemapAlternateUrlDTO('es', 'https://example.com/es/page-1'),
+    ],
+    images: [
+        new SitemapImageDTO(
+            loc: 'https://example.com/image.jpg',
+            title: 'Sample Image',
+            caption: 'A view of the ocean',
+            geo_location: 'Limerick, Ireland',
+            license: 'https://example.com/license'
+        )
     ]
 );
 echo $renderer->renderUrlEntry($urlDto);
-// Output includes local xmlns:xhtml:
-// <url xmlns:xhtml="http://www.w3.org/1999/xhtml">
+// Output includes local xmlns:xhtml and xmlns:image:
+// <url xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 //   <loc>https://example.com/en/page-1</loc>
 //   <lastmod>2023-10-01</lastmod>
 //   <changefreq>monthly</changefreq>
 //   <priority>0.5</priority>
 //   <xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/page-1"/>
 //   <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/page-1"/>
+//   <image:image>
+//     <image:loc>https://example.com/image.jpg</image:loc>
+//     <image:title>Sample Image</image:title>
+//     <image:caption>A view of the ocean</image:caption>
+//     <image:geo_location>Limerick, Ireland</image:geo_location>
+//     <image:license>https://example.com/license</image:license>
+//   </image:image>
 // </url>
 
 // Example with associative array
@@ -241,15 +258,18 @@ $arrayEntry = [
         ['hreflang' => 'x-default', 'url' => 'https://example.com/page-2'],
         ['hreflang' => 'de', 'url' => 'https://example.com/de/page-2'],
     ],
+    'images' => [
+        ['loc' => 'https://example.com/image2.jpg', 'title' => 'Image 2']
+    ]
 ];
 echo $renderer->renderUrlEntry($arrayEntry);
 
 // Rendering an entire URL Set (passing multiple URLs)
 $xmlOutput = $renderer->renderUrlSet([$urlDto, $arrayEntry]);
-// <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">...urls...</urlset>
+// <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">...urls...</urlset>
 ```
 
-> **Note:** The `xmlns:xhtml="http://www.w3.org/1999/xhtml"` namespace is dynamically added to the root `<urlset>` (or `<url>` if rendering a single entry) only when `alternates` are present. If no alternates are supplied, the sitemap output remains clean and unchanged.
+> **Note:** The `xmlns:xhtml="http://www.w3.org/1999/xhtml"` namespace is dynamically added to the root `<urlset>` (or `<url>` if rendering a single entry) only when `alternates` are present. Similarly, `xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"` is added only when `images` exist. Both are included when alternate URLs and images exist together. If neither are supplied, the sitemap output remains clean and unchanged.
 
 ---
 

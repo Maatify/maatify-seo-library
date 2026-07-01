@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - Unreleased
+- **Added:** Implementation of Phase 10C Image Sitemap Support in `SitemapXmlStringRenderer` and addition of `SitemapImageDTO` for standard Google image sitemap indexing (see `docs/verification/PHASE_10C_IMAGE_SITEMAP_SUPPORT_VERIFICATION_REPORT.md`).
 - **Added:** Implementation of Phase 10B Sitemap Hreflang / Alternate URL Support in `SitemapXmlStringRenderer` and addition of `SitemapAlternateUrlDTO` for multi-language indexing (see `docs/verification/PHASE_10B_SITEMAP_HREFLANG_ALTERNATE_URL_VERIFICATION_REPORT.md`).
 - **Added:** Implementation of Phase 10A Sitemap Index String Renderer (`SitemapIndexXmlStringRenderer`) to directly render XML sitemap index strings (see `docs/verification/PHASE_10A_SITEMAP_INDEX_STRING_RENDERER_VERIFICATION_REPORT.md`).
 - **Added:** Implementation of Phase 9A Robots.txt Output Helpers (`RobotsTxtRenderer`) to generate `robots.txt` strings in a framework-neutral way (see `docs/verification/PHASE_9A_ROBOTS_TXT_RENDERER_VERIFICATION_REPORT.md`).
