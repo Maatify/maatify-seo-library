@@ -376,3 +376,21 @@ To maintain module integrity, ensure you **do not**:
 *   **Output headers from renderers.** Do not use `header('Content-Type: ...')` inside the SEO module.
 *   **Commit `composer.lock`.** This is a reusable library; dependency resolution happens at the host application level.
 *   **Add framework packages as dependencies.** (e.g., `illuminate/support`, `symfony/http-foundation`). Keep dependencies generic.
+
+### Comprehensive SEO Reporting Integration
+
+For a unified view, the host application can use the `SeoValidationReportBuilder` to combine the `SeoMetaValidator` and `SeoValidationScoreCalculator` into a single, comprehensive `SeoValidationReportDTO`.
+
+```php
+use Maatify\Seo\Web\Validation\SeoValidationReportBuilder;
+
+$report = SeoValidationReportBuilder::build(
+    meta: $pageMetaData,
+    context: ['url' => 'https://example.com/blog/hello-world', 'entityType' => 'blog']
+);
+
+// Send the report array to a dashboard, logging service, or API response
+return new JsonResponse($report->toArray());
+```
+
+The report builder is completely framework-neutral. It simply returns a DTO and has zero side effects: it does not mutate your original metadata, change internal validator logic, or emit any HTTP headers, routes, controllers, or responses.

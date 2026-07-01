@@ -47,6 +47,41 @@ The module is complete and release-ready. It has the following foundational laye
 - **Phase 10D (Video Sitemap Support):** Web string helpers for video sitemap standard integration (`video:video`).
 - **Phase 11A (SEO Validation Helpers):** Framework-neutral helpers for auditing and validating generated SEO metadata arrays or objects to warn about missing fields or tag conflicts.
 - **Phase 11B (SEO Validation Score Helpers):** Framework-neutral calculator that computes actionable SEO scores, grades, and deductions from a validation result.
+- **Phase 11C (SEO Validation Report Helpers):** Framework-neutral builder that combines validation and scoring into a comprehensive reporting DTO.
+
+## Validation Report Example
+
+The `SeoValidationReportBuilder` combines validation and scoring into a comprehensive report.
+
+```php
+use Maatify\Seo\Web\Validation\SeoValidationReportBuilder;
+
+$metaData = [
+    'title' => 'Example Page Title',
+    'canonical' => 'https://example.com/demo'
+];
+
+$report = SeoValidationReportBuilder::build(
+    meta: $metaData,
+    validationOptions: [
+        'requireCanonical' => true,
+    ],
+    scoreOptions: [
+        'healthyMinimumScore' => 90,
+    ],
+    context: [
+        'url' => 'https://example.com/demo',
+        'entityType' => 'page',
+        'language' => 'en',
+    ]
+);
+
+// $report->isValid
+// $report->isHealthy
+// $report->score
+// $report->grade
+// $report->summary['status']
+```
 
 ## Validation Scoring Example
 

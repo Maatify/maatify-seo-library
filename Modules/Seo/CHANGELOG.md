@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - Unreleased
+- **Added:** Implementation of Phase 11C SEO Validation Report Helpers including `SeoValidationReportBuilder` and `SeoValidationReportDTO` for comprehensive combined reporting (see `docs/verification/PHASE_11C_SEO_VALIDATION_REPORT_HELPERS_VERIFICATION_REPORT.md`).
 - **Added:** Implementation of Phase 11B SEO Validation Score Helpers including `SeoValidationScoreCalculator` and `SeoValidationScoreDTO` to generate actionable scores and grades (see `docs/verification/PHASE_11B_SEO_VALIDATION_SCORE_HELPERS_VERIFICATION_REPORT.md`).
 - **Added:** Implementation of Phase 11A SEO Validation Helpers including `SeoMetaValidator`, `SeoValidationResultDTO`, and `SeoValidationIssueDTO` for framework-agnostic metadata auditing (see `docs/verification/PHASE_11A_SEO_VALIDATION_HELPERS_VERIFICATION_REPORT.md`).
 - **Added:** Implementation of Phase 10D Video Sitemap Support in `SitemapXmlStringRenderer` and addition of `SitemapVideoDTO` for standard Google video sitemap indexing (see `docs/verification/PHASE_10D_VIDEO_SITEMAP_SUPPORT_VERIFICATION_REPORT.md`).

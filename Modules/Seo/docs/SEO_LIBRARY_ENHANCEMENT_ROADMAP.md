@@ -232,6 +232,8 @@ SeoValidationResultDTO {
 
 ## Phase 11B: SEO Validation Score Helpers (Complete)
 
+## Phase 11C: SEO Validation Report Helpers (Complete)
+
 Provide a way to calculate a simple score and report directly from validation results without introducing heavy frameworks.
 
 * `Web/Validation/SeoValidationScoreCalculator.php`
