@@ -225,7 +225,7 @@ $urlDto = new SitemapUrlDTO(
             loc: 'https://example.com/image.jpg',
             title: 'Sample Image',
             caption: 'A view of the ocean',
-            geo_location: 'Limerick, Ireland',
+            geoLocation: 'Limerick, Ireland',
             license: 'https://example.com/license'
         )
     ]
