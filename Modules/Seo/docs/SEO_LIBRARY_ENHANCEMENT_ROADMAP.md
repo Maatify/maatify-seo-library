@@ -232,9 +232,7 @@ SeoValidationResultDTO {
 
 ## Phase 11B: SEO Validation Score Helpers (Complete)
 
-## Phase 11C: SEO Validation Report Helpers (Complete)
-
-Provide a way to calculate a simple score and report directly from validation results without introducing heavy frameworks.
+Provide a way to calculate a simple score directly from validation results without introducing heavy frameworks.
 
 * `Web/Validation/SeoValidationScoreCalculator.php`
 * `Web/Validation/DTO/SeoValidationScoreDTO.php`
@@ -248,6 +246,38 @@ Return:
 * info count
 * point deductions
 * isHealthy flag
+
+Useful for admin dashboard checks, automated QA, and continuous integration workflows before publishing pages.
+
+## Phase 11C: SEO Validation Report Helpers (Complete)
+
+Provide a comprehensive reporting mechanism that combines both the `SeoMetaValidator` and `SeoValidationScoreCalculator` into a single DTO.
+
+* `Web/Validation/SeoValidationReportBuilder.php`
+* `Web/Validation/DTO/SeoValidationReportDTO.php`
+
+Return fields:
+
+* isValid
+* isHealthy
+* score
+* grade
+* errorCount
+* warningCount
+* infoCount
+* issues
+* errors
+* warnings
+* info
+* deductions
+* context
+* summary
+
+Summary status rules:
+
+* fail if validation has errors
+* warning if no errors but warnings exist or score is not healthy
+* pass if valid, healthy, and no warnings
 
 Useful for admin dashboard checks, automated QA, and continuous integration workflows before publishing pages.
 
