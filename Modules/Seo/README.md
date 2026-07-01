@@ -40,3 +40,30 @@ The module is complete and release-ready. It has the following foundational laye
 - **Phase 7C (Fluent SEO Builder):** Fluent interface for dynamically building and rendering SEO output.
 - **Phase 7D (Optional Spatie Schema Integration):** Provides an optional adapter for converting Spatie schema objects to native JSON-LD DTOs.
 - **Phase 7E (Sitemap String Output):** Helper to optionally generate plain string output directly from sitemap commands. The Phase 7 usability and rendering layer is now completely implemented.
+- **Phase 9A (Robots.txt Output Helpers):** Framework-neutral helpers for generating `robots.txt` plain strings.
+
+## Rendering Robots.txt
+
+The `RobotsTxtRenderer` generates a complete `robots.txt` string dynamically.
+
+```php
+use Maatify\Seo\Web\Robots\RobotsTxtRenderer;
+use Maatify\Seo\Web\Robots\DTO\RobotsTxtDTO;
+use Maatify\Seo\Web\Robots\DTO\RobotsRuleDTO;
+
+$renderer = new RobotsTxtRenderer();
+
+$txt = new RobotsTxtDTO(
+    rules: [
+        new RobotsRuleDTO(
+            userAgent: '*',
+            allow: ['/'],
+            disallow: ['/admin/'],
+            crawlDelay: 10
+        )
+    ],
+    sitemaps: ['https://example.com/sitemap.xml']
+);
+
+echo $renderer->render($txt);
+```

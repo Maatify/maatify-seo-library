@@ -231,11 +231,32 @@ exit;
 
 ---
 
-## 8. Robots.txt Future Integration Note
+## 8. Robots.txt Integration
 
-*Note:* Helper classes for generating `robots.txt` output as plain strings are planned as a future enhancement to this library.
+Similar to sitemaps, rendering `robots.txt` files requires the host application to configure the route and output the correct headers. The library's renderer strictly returns a string and does not handle HTTP requests or responses.
 
-Once implemented, the integration will follow the same pattern: the library will return a formatted text string, and **the host application will still own the `/robots.txt` route and response headers** (`Content-Type: text/plain`).
+```php
+use Maatify\Seo\Web\Robots\RobotsTxtRenderer;
+use Maatify\Seo\Web\Robots\DTO\RobotsTxtDTO;
+use Maatify\Seo\Web\Robots\DTO\RobotsRuleDTO;
+
+// 1. Host app routing handles `/robots.txt`
+$txt = new RobotsTxtDTO(
+    rules: [
+        new RobotsRuleDTO('*', ['/'], ['/admin'])
+    ],
+    sitemaps: ['https://example.com/sitemap.xml']
+);
+
+// 2. SEO library generates the plain text string
+$renderer = new RobotsTxtRenderer();
+$robotsString = $renderer->render($txt);
+
+// 3. Host app sets Content-Type and emits the response
+header('Content-Type: text/plain; charset=utf-8');
+echo $robotsString;
+exit;
+```
 
 ---
 

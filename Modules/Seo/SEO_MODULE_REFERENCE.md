@@ -200,6 +200,12 @@ The Web layer provides a dedicated adapter for optionally converting Spatie sche
 The Web layer includes an optional helper for rendering XML sitemap strings directly.
 - **`Web/Sitemap/SitemapXmlStringRenderer.php`**: A framework-neutral helper that returns XML strings only and does not emit HTTP responses. It supports `SitemapUrlDTO` objects and raw array URL entries, correctly handling and validating `loc`, `lastmod`, `changefreq`, and `priority` fields. It safely escapes XML values natively. The existing `SitemapGeneratorService` remains fully available and unchanged.
 
+### Robots.txt String Output
+The Web layer includes framework-neutral helpers for generating `robots.txt` string output.
+- **`Web/Robots/RobotsTxtRenderer.php`**: Renders a full `robots.txt` plain string from a provided `RobotsTxtDTO`.
+- **`Web/Robots/DTO/RobotsTxtDTO.php`**: A DTO representing the complete file, containing global comments, a list of sitemaps, and user-agent rule blocks.
+- **`Web/Robots/DTO/RobotsRuleDTO.php`**: A DTO representing a single user-agent block, with fields for `userAgent`, `allow`, `disallow`, `crawlDelay`, and comments.
+
 ### Web Output DTOs
 - **`Web/DTO/SeoHeadHtmlDTO.php`**: A framework-neutral, final read-only DTO that implements `\JsonSerializable`. It separates rendered HTML into individual string sections (`metaHtml`, `openGraphHtml`, `twitterCardHtml`, `jsonLdHtml`) and provides a pre-combined `fullHtml` output, allowing host applications flexibility in rendering without requiring template engine coupling.
 

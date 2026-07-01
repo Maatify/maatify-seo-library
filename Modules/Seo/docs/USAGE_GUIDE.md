@@ -229,7 +229,50 @@ $xmlOutput = $renderer->renderUrlSet([$urlDto, $arrayEntry]);
 
 ---
 
-## 8. Existing SitemapGeneratorService Example
+## 8. Robots.txt String Output Example
+
+To quickly render a `robots.txt` string dynamically, you can use the `RobotsTxtRenderer`.
+
+```php
+use Maatify\Seo\Web\Robots\RobotsTxtRenderer;
+use Maatify\Seo\Web\Robots\DTO\RobotsTxtDTO;
+use Maatify\Seo\Web\Robots\DTO\RobotsRuleDTO;
+
+$renderer = new RobotsTxtRenderer();
+
+$txt = new RobotsTxtDTO(
+    rules: [
+        new RobotsRuleDTO(
+            userAgent: '*',
+            allow: ['/'],
+            disallow: ['/admin/', '/private/'],
+            crawlDelay: 10,
+            comments: ['Global rule for all bots']
+        ),
+        new RobotsRuleDTO(
+            userAgent: 'BadBot',
+            disallow: ['/']
+        )
+    ],
+    sitemaps: [
+        'https://example.com/sitemap.xml',
+        'https://example.com/sitemap-images.xml'
+    ],
+    comments: [
+        'Welcome to my robots.txt',
+        'Created dynamically'
+    ]
+);
+
+// Returns a correctly formatted robots.txt plain string.
+// You must output this string and set the Content-Type: text/plain
+// header in your host application controller.
+echo $renderer->render($txt);
+```
+
+---
+
+## 9. Existing SitemapGeneratorService Example
 
 The core `SitemapGeneratorService` remains available. It is responsible for orchestrating sitemap generation logic and returning structured DTOs (`SitemapGenerationResultDTO`), which represents a structural abstraction over the XML data.
 
@@ -256,7 +299,7 @@ $xmlContent = $result->xml;
 
 ---
 
-## 9. Recommended Host Application Usage
+## 10. Recommended Host Application Usage
 
 The Maatify SEO module is designed to integrate cleanly into any PHP framework without introducing hard dependencies on the framework itself.
 
@@ -325,7 +368,7 @@ Always pass the pre-rendered HTML string (or the `SeoHeadHtmlDTO`) to your templ
 
 ---
 
-## 10. Common Mistakes
+## 11. Common Mistakes
 
 When implementing the Maatify SEO module, ensure you adhere strictly to the following guidelines:
 
