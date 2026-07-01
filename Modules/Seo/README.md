@@ -48,6 +48,7 @@ The module is complete and release-ready. It has the following foundational laye
 - **Phase 11A (SEO Validation Helpers):** Framework-neutral helpers for auditing and validating generated SEO metadata arrays or objects to warn about missing fields or tag conflicts.
 - **Phase 11B (SEO Validation Score Helpers):** Framework-neutral calculator that computes actionable SEO scores, grades, and deductions from a validation result.
 - **Phase 11C (SEO Validation Report Helpers):** Framework-neutral builder that combines validation and scoring into a comprehensive reporting DTO.
+- **Phase 11D (SEO Validation Presets):** Framework-neutral helper that provides pre-configured validation and score options (e.g. strict, minimal, standard) for streamlined usage.
 
 ## Validation Report Example
 

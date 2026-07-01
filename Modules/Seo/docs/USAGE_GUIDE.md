@@ -477,9 +477,42 @@ foreach ($scoreDto->deductions as $deduction) {
 }
 ```
 
+### Validation and Score Presets
+
+Instead of manually building options arrays, you can use the `SeoValidationPreset` helper which provides ready-made options for both validation and scoring. Invalid preset names throw `SeoInvalidArgumentException`. The presets do not mutate external state or use static mutable cache.
+
+* `minimal()`: Does not require canonical. Uses default scoring (errorPenalty 25, warningPenalty 5, infoPenalty 0, healthyMinimumScore 80).
+* `standard()`: Requires canonical. Title limits 10-60. Description limits 50-160. Uses default scoring.
+* `strict()`: Requires canonical. Title limits 20-60. Description limits 80-155. errorPenalty 30, warningPenalty 10, healthyMinimumScore 90.
+
+```php
+use Maatify\Seo\Web\Validation\SeoMetaValidator;
+use Maatify\Seo\Web\Validation\SeoValidationScoreCalculator;
+use Maatify\Seo\Web\Validation\SeoValidationPreset;
+
+$metaData = [
+    'title' => 'Title Here',
+    'description' => 'Description Here',
+];
+
+// Returns an independent plain array with 'validationOptions' and 'scoreOptions'
+$preset = SeoValidationPreset::standard();
+// Or dynamically: $preset = SeoValidationPreset::for('standard');
+
+$result = SeoMetaValidator::validate(
+    meta: $metaData,
+    options: $preset['validationOptions']
+);
+
+$score = SeoValidationScoreCalculator::score(
+    result: $result,
+    options: $preset['scoreOptions']
+);
+```
+
 ### Validation and Score Options
 
-You can customize the validator rules by passing an `$options` array as the second argument. Invalid configurations (e.g. non-integers for lengths) will throw a `SeoInvalidArgumentException`.
+You can also customize the validator rules by passing an `$options` array as the second argument. Invalid configurations (e.g. non-integers for lengths) will throw a `SeoInvalidArgumentException`.
 
 ```php
 use Maatify\Seo\Web\Validation\SeoMetaValidator;
@@ -630,24 +663,23 @@ The `SeoValidationReportBuilder` combines validation (`SeoMetaValidator`) and sc
 
 #### Building a Report
 
-You can provide metadata, validation options, score options, and custom context:
+You can provide metadata, validation options, score options, and custom context. The `SeoValidationPreset` helper is a great fit here:
 
 ```php
 use Maatify\Seo\Web\Validation\SeoValidationReportBuilder;
+use Maatify\Seo\Web\Validation\SeoValidationPreset;
 
 $metaData = [
     'title' => 'Missing Canonical URL Example',
     'description' => 'This page has a title and description, but is missing a canonical URL.',
 ];
 
+$preset = SeoValidationPreset::strict();
+
 $report = SeoValidationReportBuilder::build(
     meta: $metaData,
-    validationOptions: [
-        'requireCanonical' => true,
-    ],
-    scoreOptions: [
-        'healthyMinimumScore' => 90,
-    ],
+    validationOptions: $preset['validationOptions'],
+    scoreOptions: $preset['scoreOptions'],
     context: [
         'url' => 'https://example.com/products/demo',
         'entityType' => 'product',
