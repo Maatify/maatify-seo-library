@@ -188,6 +188,10 @@ The Web layer includes optional HTML Rendering Helpers under `src/Web/Render/`. 
 - **`Web/Render/JsonLdScriptRenderer.php`**: Safely encodes array or DTO structures into valid JSON and wraps them in `<script type="application/ld+json">` tags, mitigating XSS risks.
 - **`Web/Render/SeoHeadHtmlRenderer.php`**: A facade that orchestrates the above renderers to combine and return the complete SEO HTML head payload dynamically. Contains `renderDto()` and `renderPayloadDto()` which return a `SeoHeadHtmlDTO`. The existing string rendering API via `render()` and `renderPayload()` remains fully available.
 
+### Fluent Output Builder
+The Web layer includes a framework-neutral fluent output builder under `src/Web/Builder/`.
+- **`Web/Builder/FluentSeoBuilder.php`**: An instance-based (no static global state) builder that provides a fluent interface for configuring SEO attributes (`title()`, `description()`, OpenGraph, Twitter, and schemas). It validates input natively and can build a `MetaTagsDTO`, render a plain string via `SeoHeadHtmlRenderer`, or render a `SeoHeadHtmlDTO`. It accepts JSON-LD schemas as `JsonLdSchemaDTO` objects or associative arrays. Existing Phase 7A/7B APIs remain fully available.
+
 ### Web Output DTOs
 - **`Web/DTO/SeoHeadHtmlDTO.php`**: A framework-neutral, final read-only DTO that implements `\JsonSerializable`. It separates rendered HTML into individual string sections (`metaHtml`, `openGraphHtml`, `twitterCardHtml`, `jsonLdHtml`) and provides a pre-combined `fullHtml` output, allowing host applications flexibility in rendering without requiring template engine coupling.
 
