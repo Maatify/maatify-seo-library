@@ -198,7 +198,7 @@ The Web layer provides a dedicated adapter for optionally converting Spatie sche
 
 ### Sitemap String Output
 The Web layer includes optional helpers for rendering XML sitemap strings directly.
-- **`Web/Sitemap/SitemapXmlStringRenderer.php`**: A framework-neutral helper that returns XML strings only and does not emit HTTP responses. It supports `SitemapUrlDTO` objects and raw array URL entries, correctly handling and validating `loc`, `lastmod`, `changefreq`, and `priority` fields. It safely escapes XML values natively. The existing `SitemapGeneratorService` remains fully available and unchanged.
+- **`Web/Sitemap/SitemapXmlStringRenderer.php`**: A framework-neutral helper that returns XML strings only and does not emit HTTP responses. It supports `SitemapUrlDTO` objects and raw array URL entries, correctly handling and validating `loc`, `lastmod`, `changefreq`, `priority`, and hreflang `alternates` fields. When `alternates` are present, it dynamically adds the `xmlns:xhtml` namespace and renders `<xhtml:link>` elements. It safely escapes XML values natively. The existing `SitemapGeneratorService` remains fully available and unchanged.
 - **`Web/Sitemap/SitemapIndexXmlStringRenderer.php`**: A framework-neutral helper that returns XML strings only for Sitemap Indexes. It supports `SitemapIndexEntryDTO` objects and raw array URL entries, safely escaping values.
 
 ### Robots.txt String Output

@@ -210,16 +210,27 @@ Sitemaps require the host application to configure the route, set the correct HT
 
 ```php
 // Example in a basic framework or plain PHP
-use Maatify\Seo\Web\Sitemap\SitemapXmlStringRenderer;
+use Maatify\Seo\Shared\DTO\Sitemap\SitemapAlternateUrlDTO;
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapUrlDTO;
+use Maatify\Seo\Web\Sitemap\SitemapXmlStringRenderer;
 
 // 1. Host app routing handles `/sitemap.xml`
 $sitemapUrls = [
-    new SitemapUrlDTO('https://example.com/', '2023-10-01', 'daily', 1.0),
+    new SitemapUrlDTO(
+        loc: 'https://example.com/en',
+        lastmod: '2023-10-01',
+        changefreq: 'daily',
+        priority: 1.0,
+        alternates: [
+            new SitemapAlternateUrlDTO('en', 'https://example.com/en'),
+            new SitemapAlternateUrlDTO('es', 'https://example.com/es')
+        ]
+    ),
     new SitemapUrlDTO('https://example.com/about', '2023-09-15', 'monthly', 0.8)
 ];
 
-// 2. SEO library generates the XML string
+// 2. SEO library generates the XML string.
+// If any alternates are provided, the xmlns:xhtml namespace is automatically added.
 $renderer = new SitemapXmlStringRenderer();
 $xmlString = $renderer->renderUrlSet($sitemapUrls);
 
