@@ -251,7 +251,7 @@ $result = $generator->generateUrlSitemap($urls);
 
 // You must take the result output and stream it or respond with it in your host application controller.
 // The service itself does not emit an HTTP response.
-$xmlContent = $result->content;
+$xmlContent = $result->xml;
 ```
 
 ---
