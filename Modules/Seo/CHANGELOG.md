@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [1.0.0] - Unreleased
+- **Added:** Implementation of Phase 9A Robots.txt Output Helpers (`RobotsTxtRenderer`) to generate `robots.txt` strings in a framework-neutral way (see `docs/verification/PHASE_9A_ROBOTS_TXT_RENDERER_VERIFICATION_REPORT.md`).
 - **Added:** Implementation of Phase 7E Sitemap String Output Helpers (`SitemapXmlStringRenderer`) to directly render XML sitemap strings (see `docs/verification/PHASE_7E_SITEMAP_STRING_OUTPUT_VERIFICATION_REPORT.md`).
 - **Added:** Implementation of Phase 7D Optional Spatie Schema Integration to provide a framework-neutral adapter for `spatie/schema-org`.
 - **Added:** Implementation of Phase 7C Fluent SEO Builder to provide a framework-neutral fluent interface for dynamic output construction.

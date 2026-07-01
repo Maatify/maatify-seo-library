@@ -186,6 +186,9 @@ A PDO-based schema is required for specific sub-systems where persistence provid
   - **Phase 7D: Spatie Schema Integration (Complete):** Provide a dedicated, optional bridge wrapping the `spatie/schema-org` package.
   - **Phase 7E: Sitemap String Output (Complete):** Helper to optionally generate plain string output directly from sitemap commands.
 
+- **Phase 9: Robots.txt Output Helpers**
+  - **Phase 9A: Robots.txt String Renderer (Complete):** Provide framework-neutral helpers for generating `robots.txt` content as plain strings.
+
 ## 11. Risks / Decisions that Need Approval Before Coding
 
 - **Entity Identifier Type**: Host projects might use `int`, `string` (UUID), or mixed types for `entity_id`. Should `entity_id` in `maa_seo_*` tables be `VARCHAR(36)` to safely support UUIDs, even if the host uses integers? (Recommendation: Yes, `VARCHAR(36)`).
