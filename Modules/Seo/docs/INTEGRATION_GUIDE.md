@@ -307,6 +307,7 @@ You can build a script to scrape your own site's metadata (or catch it during ge
 
 ```php
 use Maatify\Seo\Web\Validation\SeoMetaValidator;
+use Maatify\Seo\Web\Validation\SeoValidationPreset;
 
 // Assume the host app generated the $meta array for a product page
 $meta = [
@@ -315,10 +316,10 @@ $meta = [
     // Missing required fields for OG and Canonical, perhaps?
 ];
 
-$result = SeoMetaValidator::validate($meta, [
-    'requireCanonical' => true,
-    'descriptionMinLength' => 50,
-]);
+// Use a preset like standard() which requires canonical and has a 50 char min description length
+$preset = SeoValidationPreset::standard();
+
+$result = SeoMetaValidator::validate($meta, $preset['validationOptions']);
 
 if ($result->hasWarnings) {
     // Log warnings to host monitoring tools
@@ -327,7 +328,7 @@ if ($result->hasWarnings) {
 }
 
 // Calculate an actionable score for the payload
-$scoreDto = \Maatify\Seo\Web\Validation\SeoValidationScoreCalculator::score($result);
+$scoreDto = \Maatify\Seo\Web\Validation\SeoValidationScoreCalculator::score($result, $preset['scoreOptions']);
 if (!$scoreDto->isHealthy) {
     HostLogger::error("Unhealthy SEO Score ({$scoreDto->score}/100) generated for product.", ['deductions' => $scoreDto->deductions]);
 }
@@ -383,9 +384,14 @@ For a unified view, the host application can use the `SeoValidationReportBuilder
 
 ```php
 use Maatify\Seo\Web\Validation\SeoValidationReportBuilder;
+use Maatify\Seo\Web\Validation\SeoValidationPreset;
+
+$preset = SeoValidationPreset::standard();
 
 $report = SeoValidationReportBuilder::build(
     meta: $pageMetaData,
+    validationOptions: $preset['validationOptions'],
+    scoreOptions: $preset['scoreOptions'],
     context: ['url' => 'https://example.com/blog/hello-world', 'entityType' => 'blog']
 );
 

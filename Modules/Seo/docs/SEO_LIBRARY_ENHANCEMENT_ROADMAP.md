@@ -281,6 +281,10 @@ Summary status rules:
 
 Useful for admin dashboard checks, automated QA, and continuous integration workflows before publishing pages.
 
+## Phase 11D: SEO Validation Presets (Complete)
+
+Provides pre-configured validation option arrays (`strict`, `minimal`, `standard`) via `SeoValidationPreset` to streamline common workflows when using the validator, calculator, and report builder.
+
 ---
 
 # Phase 13: JSON-LD Schema Builders
