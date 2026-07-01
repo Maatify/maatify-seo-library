@@ -231,7 +231,7 @@ $sitemapUrls = [
             new SitemapImageDTO('https://example.com/image.jpg', 'Hero Image')
         ],
         videos: [
-            new SitemapVideoDTO('https://example.com/thumbnail.jpg', 'Hero Video', 'A great video')
+            new SitemapVideoDTO('https://example.com/thumbnail.jpg', 'Hero Video', 'A great video', 'https://example.com/video.mp4')
         ]
     ),
     new SitemapUrlDTO('https://example.com/about', '2023-09-15', 'monthly', 0.8)
