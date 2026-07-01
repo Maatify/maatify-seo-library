@@ -14,5 +14,8 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^2.2"
+    },
+    "suggest": {
+        "spatie/schema-org": "Optional integration for converting Spatie schema objects into Maatify JSON-LD DTOs."
     }
 }
