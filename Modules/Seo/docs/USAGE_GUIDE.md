@@ -623,3 +623,60 @@ When implementing the Maatify SEO module, ensure you adhere strictly to the foll
 *   **Do not hardcode framework dependencies.** Do not attempt to use `Illuminate\Support` or `Symfony\Component\HttpFoundation` inside the core module. Ensure integration points use standard PHP functionality or provided contracts.
 *   **Do not commit `composer.lock`.** As a library module, `composer.lock` should not be tracked to allow proper dependency resolution in host environments.
 *   **Do not rely on the `spatie/schema-org` package unless installed.** The module does not enforce this package as a required dependency. The provided adapter checks for class existence before relying on the object methods, allowing the host application to opt-in independently.
+
+### Validation Report Builder
+
+The `SeoValidationReportBuilder` combines validation (`SeoMetaValidator`) and scoring (`SeoValidationScoreCalculator`) into a comprehensive report object (`SeoValidationReportDTO`). This provides a single, easy-to-use interface for both processes while preserving original metadata input and any context you wish to pass through.
+
+#### Building a Report
+
+You can provide metadata, validation options, score options, and custom context:
+
+```php
+use Maatify\Seo\Web\Validation\SeoValidationReportBuilder;
+
+$metaData = [
+    'title' => 'Missing Canonical URL Example',
+    'description' => 'This page has a title and description, but is missing a canonical URL.',
+];
+
+$report = SeoValidationReportBuilder::build(
+    meta: $metaData,
+    validationOptions: [
+        'requireCanonical' => true,
+    ],
+    scoreOptions: [
+        'healthyMinimumScore' => 90,
+    ],
+    context: [
+        'url' => 'https://example.com/products/demo',
+        'entityType' => 'product',
+        'entityId' => 123,
+        'language' => 'en',
+        'source' => 'qa',
+    ],
+);
+```
+
+> **Note:** Providing invalid types or configuration values in `validationOptions` or `scoreOptions` will throw `SeoInvalidArgumentException`. The `SeoValidationReportBuilder` does not mutate your original metadata array/object, does not change the behavior of the `SeoMetaValidator` or `SeoValidationScoreCalculator`, and does not emit HTTP headers, routes, controllers, or responses. It is fully framework-neutral.
+
+#### Reading the Report
+
+The `$report` (`SeoValidationReportDTO`) provides several ways to consume the result:
+
+- `$report->isValid`: Boolean. `false` if any errors exist.
+- `$report->isHealthy`: Boolean. `false` if the score is below the `healthyMinimumScore`.
+- `$report->score`: Integer (0-100).
+- `$report->grade`: String (A, B, C, D, or F).
+- `$report->errorCount`, `$report->warningCount`, `$report->infoCount`: Integers.
+- `$report->issues`, `$report->errors`, `$report->warnings`, `$report->info`: Arrays of issue shapes (`code`, `severity`, `message`, `field`).
+- `$report->deductions`: Array of applied point deductions shapes (`code`, `severity`, `field`, `points`).
+- `$report->context`: Your optional `context` array is preserved exactly as-is. Typical keys might be `url`, `entityType`, `entityId`, `language`, or `source`.
+- `$report->summary`: An array with `status` and `message` keys indicating the overall validation status.
+
+#### Summary Status Rules
+
+The `$report->summary['status']` and `$report->summary['message']` are determined using the following rules:
+- **`fail`**: If the validation has errors (`isValid` is false). Message: `SEO validation failed.`
+- **`warning`**: If there are no errors, but warnings exist OR the score is not healthy. Message: `SEO validation completed with warnings.`
+- **`pass`**: If valid, healthy, and no warnings exist. Message: `SEO validation passed.`
