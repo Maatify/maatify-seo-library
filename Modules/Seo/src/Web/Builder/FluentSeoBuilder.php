@@ -9,6 +9,7 @@ use Maatify\Seo\Shared\DTO\MetaTagsDTO;
 use Maatify\Seo\Shared\DTO\Schema\JsonLdSchemaDTO;
 use Maatify\Seo\Web\DTO\SeoHeadHtmlDTO;
 use Maatify\Seo\Web\Render\SeoHeadHtmlRenderer;
+use Maatify\Seo\Web\Schema\SpatieSchemaAdapter;
 
 final class FluentSeoBuilder
 {
@@ -132,6 +133,13 @@ final class FluentSeoBuilder
     public function schema(JsonLdSchemaDTO|array $schema): self
     {
         $this->schemas[] = $this->normalizeSchema($schema, 'schema');
+
+        return $this;
+    }
+
+    public function spatieSchema(object $schema, ?SpatieSchemaAdapter $adapter = null): self
+    {
+        $this->schemas[] = ($adapter ?? new SpatieSchemaAdapter())->toJsonLdSchemaDTO($schema);
 
         return $this;
     }
