@@ -20,4 +20,9 @@ final class SeoInvalidArgumentException extends \RuntimeException implements Seo
     {
         return new self("HTTP status [{$status}] is invalid for SEO redirects.", SeoErrorCode::INVALID_HTTP_STATUS);
     }
+
+    public static function invalidSchemaEntry(string $field): self
+    {
+        return new self("Field [{$field}] must be a non-empty associative JSON-LD schema array or JsonLdSchemaDTO.", SeoErrorCode::INVALID_EMPTY_FIELD);
+    }
 }
