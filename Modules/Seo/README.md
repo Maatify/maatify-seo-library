@@ -43,6 +43,7 @@ The module is complete and release-ready. It has the following foundational laye
 - **Phase 9A (Robots.txt Output Helpers):** Framework-neutral helpers for generating `robots.txt` plain strings.
 - **Phase 10A (Sitemap Index String Renderer):** Helper to optionally generate plain string output directly for sitemap indexes.
 - **Phase 10B (Hreflang / Alternate URL Support):** Web string helpers for sitemap multi-language indexing (`xhtml:link`).
+- **Phase 10C (Image Sitemap Support):** Web string helpers for image sitemap standard integration (`image:image`).
 
 ## Rendering Robots.txt
 
