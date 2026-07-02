@@ -384,7 +384,7 @@ To maintain module integrity, ensure you **do not**:
 
 ### Comprehensive SEO Reporting Integration
 
-For a unified view, the host application can use the `SeoValidationReportBuilder` to combine the `SeoMetaValidator` and `SeoValidationScoreCalculator` into a single, comprehensive `SeoValidationReportDTO`.
+For a unified view, the host application can use the `SeoValidationReportBuilder` to combine the `SeoMetaValidator` and `SeoValidationScoreCalculator` into a single, comprehensive `SeoValidationReportDTO`. If you need to validate multiple items at once (e.g. for a bulk audit or CI report), you can use `SeoValidationBatchReportBuilder::build($items, $validationOptions = [], $scoreOptions = [], $sharedContext = [])`. This builder ensures existing validation and scoring behaviors remain completely unchanged.
 
 ```php
 use Maatify\Seo\Web\Validation\SeoValidationReportBuilder;

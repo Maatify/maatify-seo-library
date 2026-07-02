@@ -296,6 +296,8 @@ Provides pre-configured validation option arrays (`strict`, `minimal`, `standard
 
 ## Phase 11E: SEO Validation Report Exporter (Complete)
 
+## Phase 11F: SEO Validation Batch Report Helpers (Complete)
+
 Provide a framework-neutral helper to export validation reports into multiple formats:
 
 *   `Web/Validation/SeoValidationReportExporter.php`

@@ -742,6 +742,70 @@ The `$report->summary['status']` and `$report->summary['message']` are determine
 
 #### Exporting the Report
 
+
+### Validation Batch Report Builder
+
+The `SeoValidationBatchReportBuilder` allows you to build SEO validation reports for multiple pages/products/entities in one framework-neutral batch. It provides aggregate counts, score stats, and summary status. It is particularly useful for QA crawls, admin dashboards, audits, CI reports, and bulk product/category checks.
+
+It accepts an `$items` array which must be a non-empty list. Each item is an associative array that requires a `meta` key (array or object) and accepts an optional `context` array. The builder can also accept a `$sharedContext` array, which is merged into each item's context. If an item provides context keys that overlap with the shared context, the item's context overrides the shared context.
+
+```php
+use Maatify\Seo\Web\Validation\SeoValidationBatchReportBuilder;
+use Maatify\Seo\Web\Validation\SeoValidationPreset;
+
+$preset = SeoValidationPreset::standard();
+$batch = SeoValidationBatchReportBuilder::build(
+    items: [
+        [
+            'meta' => [
+                'title' => 'Product A',
+                'description' => 'Product A description long enough for SEO snippets.',
+                'canonical' => 'https://example.com/products/a',
+            ],
+            'context' => [
+                'url' => 'https://example.com/products/a',
+                'entityType' => 'product',
+                'entityId' => 101,
+            ],
+        ],
+        [
+            'meta' => [
+                'title' => 'Product B',
+                'description' => 'Product B description long enough for SEO snippets.',
+                'canonical' => 'https://example.com/products/b',
+            ],
+            'context' => [
+                'url' => 'https://example.com/products/b',
+                'entityType' => 'product',
+                'entityId' => 102,
+            ],
+        ],
+    ],
+    validationOptions: $preset['validationOptions'],
+    scoreOptions: $preset['scoreOptions'],
+    sharedContext: [
+        'language' => 'en',
+        'source' => 'qa-crawl',
+    ],
+);
+
+$array = $batch->toArray();
+$json = json_encode($batch, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+```
+
+The output DTO (`SeoValidationBatchReportDTO`) contains counts (`totalCount`, `validCount`, `invalidCount`), score stats (`averageScore`, `minScore`, `maxScore`), and summary rules: it fails if any report is invalid, warns if all reports are valid but any report is unhealthy or has warnings, and passes when all reports are valid, healthy, and warning-free.
+
+```php
+$batch->summary['status']; // pass | warning | fail
+$batch->totalCount;
+$batch->validCount;
+$batch->invalidCount;
+$batch->averageScore;
+$batch->reports[0]->summary['message'];
+```
+
+> **Note:** The `SeoValidationBatchReportBuilder` uses `SeoValidationReportBuilder::build(...)` internally for each item. It does not mutate the input data. It is completely framework-neutral and emits no HTTP headers, routes, controllers, or responses. Furthermore, existing validation, score, report builder, exporter, preset, sitemap, and robots behaviors remain unchanged.
+
 You can easily export the report into various formats using the `SeoValidationReportExporter`:
 
 ```php
