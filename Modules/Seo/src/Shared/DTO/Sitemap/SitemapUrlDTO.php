@@ -17,10 +17,14 @@ final readonly class SitemapUrlDTO implements \JsonSerializable
     /** @var list<SitemapVideoDTO> */
     public array $videos;
 
+    /** @var list<SitemapNewsDTO> */
+    public array $news;
+
     /**
      * @param array<mixed> $alternates
      * @param array<mixed> $images
      * @param array<mixed> $videos
+     * @param array<mixed> $news
      */
     public function __construct(
         public string $loc,
@@ -30,6 +34,7 @@ final readonly class SitemapUrlDTO implements \JsonSerializable
         array $alternates = [],
         array $images = [],
         array $videos = [],
+        array $news = [],
     ) {
         if (trim($this->loc) === '') {
             throw SeoInvalidArgumentException::emptyField('loc');
@@ -79,6 +84,17 @@ final readonly class SitemapUrlDTO implements \JsonSerializable
         }
 
         $this->videos = $validVideos;
+
+        $validNews = [];
+        foreach ($news as $newsEntry) {
+            if (!$newsEntry instanceof SitemapNewsDTO) {
+                throw SeoInvalidArgumentException::emptyField('news');
+            }
+
+            $validNews[] = $newsEntry;
+        }
+
+        $this->news = $validNews;
     }
 
     public static function isValidLastmod(string $lastmod): bool
@@ -106,7 +122,7 @@ final readonly class SitemapUrlDTO implements \JsonSerializable
     }
 
     /**
-     * @return array{loc: string, lastmod: ?string, changefreq: ?string, priority: ?float, alternates: list<array{hreflang: string, url: string}>, images: list<array{loc: string, title: ?string, caption: ?string, geoLocation: ?string, license: ?string}>, videos: list<array{thumbnailLoc: string, title: string, description: string, contentLoc: ?string, playerLoc: ?string, duration: ?int, publicationDate: ?string}>}
+     * @return array{loc: string, lastmod: ?string, changefreq: ?string, priority: ?float, alternates: list<array{hreflang: string, url: string}>, images: list<array{loc: string, title: ?string, caption: ?string, geoLocation: ?string, license: ?string}>, videos: list<array{thumbnailLoc: string, title: string, description: string, contentLoc: ?string, playerLoc: ?string, duration: ?int, publicationDate: ?string}>, news: list<array{publicationName: string, publicationLanguage: string, publicationDate: string, title: string, access: ?string, genres: ?string, keywords: ?string, stockTickers: ?string}>}
      */
     public function jsonSerialize(): array
     {
@@ -122,6 +138,10 @@ final readonly class SitemapUrlDTO implements \JsonSerializable
         foreach ($this->videos as $video) {
             $videos[] = $video->jsonSerialize();
         }
+        $news = [];
+        foreach ($this->news as $newsEntry) {
+            $news[] = $newsEntry->jsonSerialize();
+        }
 
         return [
             'loc' => trim($this->loc),
@@ -131,6 +151,7 @@ final readonly class SitemapUrlDTO implements \JsonSerializable
             'alternates' => $alternates,
             'images' => $images,
             'videos' => $videos,
+            'news' => $news,
         ];
     }
 }

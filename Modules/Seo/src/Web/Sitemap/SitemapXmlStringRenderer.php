@@ -7,6 +7,7 @@ namespace Maatify\Seo\Web\Sitemap;
 use Maatify\Seo\Exception\SeoInvalidArgumentException;
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapAlternateUrlDTO;
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapImageDTO;
+use Maatify\Seo\Shared\DTO\Sitemap\SitemapNewsDTO;
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapUrlDTO;
 use Maatify\Seo\Shared\DTO\Sitemap\SitemapVideoDTO;
 use XMLWriter;
@@ -23,6 +24,7 @@ final readonly class SitemapXmlStringRenderer
         $hasAlternates = false;
         $hasImages = false;
         $hasVideos = false;
+        $hasNews = false;
         foreach ($urls as $url) {
             $normalizedUrl = $this->normalizeUrlEntry($url);
             if ($normalizedUrl['alternates'] !== []) {
@@ -33,6 +35,9 @@ final readonly class SitemapXmlStringRenderer
             }
             if ($normalizedUrl['videos'] !== []) {
                 $hasVideos = true;
+            }
+            if ($normalizedUrl['news'] !== []) {
+                $hasNews = true;
             }
             $normalizedUrls[] = $normalizedUrl;
         }
@@ -47,6 +52,9 @@ final readonly class SitemapXmlStringRenderer
         }
         if ($hasVideos) {
             $writer->writeAttribute('xmlns:video', 'http://www.google.com/schemas/sitemap-video/1.1');
+        }
+        if ($hasNews) {
+            $writer->writeAttribute('xmlns:news', 'http://www.google.com/schemas/sitemap-news/0.9');
         }
 
         foreach ($normalizedUrls as $url) {
@@ -69,7 +77,7 @@ final readonly class SitemapXmlStringRenderer
     }
 
     /**
-     * @return array{loc: string, lastmod: ?string, changefreq: ?string, priority: ?float, alternates: list<array{hreflang: string, url: string}>, images: list<array{loc: string, title: ?string, caption: ?string, geoLocation: ?string, license: ?string}>, videos: list<array{thumbnailLoc: string, title: string, description: string, contentLoc: ?string, playerLoc: ?string, duration: ?int, publicationDate: ?string}>}
+     * @return array{loc: string, lastmod: ?string, changefreq: ?string, priority: ?float, alternates: list<array{hreflang: string, url: string}>, images: list<array{loc: string, title: ?string, caption: ?string, geoLocation: ?string, license: ?string}>, videos: list<array{thumbnailLoc: string, title: string, description: string, contentLoc: ?string, playerLoc: ?string, duration: ?int, publicationDate: ?string}>, news: list<array{publicationName: string, publicationLanguage: string, publicationDate: string, title: string, access: ?string, genres: ?string, keywords: ?string, stockTickers: ?string}>}
      */
     private function normalizeUrlEntry(mixed $url): array
     {
@@ -82,6 +90,7 @@ final readonly class SitemapXmlStringRenderer
                 'alternates' => $this->normalizeDtoAlternates($url->alternates),
                 'images' => $this->normalizeDtoImages($url->images),
                 'videos' => $this->normalizeDtoVideos($url->videos),
+                'news' => $this->normalizeDtoNews($url->news),
             ];
         }
 
@@ -102,6 +111,7 @@ final readonly class SitemapXmlStringRenderer
             'alternates' => $this->normalizeArrayAlternates($url),
             'images' => $this->normalizeArrayImages($url),
             'videos' => $this->normalizeArrayVideos($url),
+            'news' => $this->normalizeArrayNews($url),
         ];
     }
 
@@ -155,6 +165,29 @@ final readonly class SitemapXmlStringRenderer
                 $video->playerLoc,
                 $video->duration,
                 $video->publicationDate,
+            );
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * @param list<SitemapNewsDTO> $news
+     * @return list<array{publicationName: string, publicationLanguage: string, publicationDate: string, title: string, access: ?string, genres: ?string, keywords: ?string, stockTickers: ?string}>
+     */
+    private function normalizeDtoNews(array $news): array
+    {
+        $normalized = [];
+        foreach ($news as $newsEntry) {
+            $normalized[] = $this->normalizeNewsValues(
+                $newsEntry->publicationName,
+                $newsEntry->publicationLanguage,
+                $newsEntry->publicationDate,
+                $newsEntry->title,
+                $newsEntry->access,
+                $newsEntry->genres,
+                $newsEntry->keywords,
+                $newsEntry->stockTickers,
             );
         }
 
@@ -274,6 +307,58 @@ final readonly class SitemapXmlStringRenderer
                 $this->nullableArrayString($video, 'playerLoc'),
                 $this->nullableArrayInt($video, 'duration'),
                 $this->nullableArrayString($video, 'publicationDate'),
+            );
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * @param array<mixed> $url
+     * @return list<array{publicationName: string, publicationLanguage: string, publicationDate: string, title: string, access: ?string, genres: ?string, keywords: ?string, stockTickers: ?string}>
+     */
+    private function normalizeArrayNews(array $url): array
+    {
+        if (!array_key_exists('news', $url) || $url['news'] === null) {
+            return [];
+        }
+
+        if (!is_array($url['news']) || !$this->isListArray($url['news'])) {
+            throw SeoInvalidArgumentException::emptyField('news');
+        }
+
+        $normalized = [];
+        foreach ($url['news'] as $newsEntry) {
+            if (!is_array($newsEntry) || $this->isListArray($newsEntry)) {
+                throw SeoInvalidArgumentException::emptyField('news');
+            }
+
+            $publicationName = $newsEntry['publicationName'] ?? null;
+            $publicationLanguage = $newsEntry['publicationLanguage'] ?? null;
+            $publicationDate = $newsEntry['publicationDate'] ?? null;
+            $title = $newsEntry['title'] ?? null;
+            if (!is_scalar($publicationName) || trim((string) $publicationName) === '') {
+                throw SeoInvalidArgumentException::emptyField('publicationName');
+            }
+            if (!is_scalar($publicationLanguage) || trim((string) $publicationLanguage) === '') {
+                throw SeoInvalidArgumentException::emptyField('publicationLanguage');
+            }
+            if (!is_scalar($publicationDate) || trim((string) $publicationDate) === '') {
+                throw SeoInvalidArgumentException::emptyField('publicationDate');
+            }
+            if (!is_scalar($title) || trim((string) $title) === '') {
+                throw SeoInvalidArgumentException::emptyField('title');
+            }
+
+            $normalized[] = $this->normalizeNewsValues(
+                (string) $publicationName,
+                (string) $publicationLanguage,
+                (string) $publicationDate,
+                (string) $title,
+                $this->nullableArrayString($newsEntry, 'access'),
+                $this->nullableArrayString($newsEntry, 'genres'),
+                $this->nullableArrayString($newsEntry, 'keywords'),
+                $this->nullableArrayString($newsEntry, 'stockTickers'),
             );
         }
 
@@ -402,6 +487,48 @@ final readonly class SitemapXmlStringRenderer
         ];
     }
 
+    /**
+     * @return array{publicationName: string, publicationLanguage: string, publicationDate: string, title: string, access: ?string, genres: ?string, keywords: ?string, stockTickers: ?string}
+     */
+    private function normalizeNewsValues(
+        string $publicationName,
+        string $publicationLanguage,
+        string $publicationDate,
+        string $title,
+        ?string $access,
+        ?string $genres,
+        ?string $keywords,
+        ?string $stockTickers,
+    ): array {
+        $publicationName = trim($publicationName);
+        if ($publicationName === '') {
+            throw SeoInvalidArgumentException::emptyField('publicationName');
+        }
+        $publicationLanguage = trim($publicationLanguage);
+        if ($publicationLanguage === '') {
+            throw SeoInvalidArgumentException::emptyField('publicationLanguage');
+        }
+        $publicationDate = trim($publicationDate);
+        if ($publicationDate === '') {
+            throw SeoInvalidArgumentException::emptyField('publicationDate');
+        }
+        $title = trim($title);
+        if ($title === '') {
+            throw SeoInvalidArgumentException::emptyField('title');
+        }
+
+        return [
+            'publicationName' => $publicationName,
+            'publicationLanguage' => $publicationLanguage,
+            'publicationDate' => $publicationDate,
+            'title' => $title,
+            'access' => $this->nullableNonEmptyString($access),
+            'genres' => $this->nullableNonEmptyString($genres),
+            'keywords' => $this->nullableNonEmptyString($keywords),
+            'stockTickers' => $this->nullableNonEmptyString($stockTickers),
+        ];
+    }
+
     private function isValidHreflang(string $hreflang): bool
     {
         $value = strtolower(trim($hreflang));
@@ -483,7 +610,7 @@ final readonly class SitemapXmlStringRenderer
     }
 
     /**
-     * @param array{loc: string, lastmod: ?string, changefreq: ?string, priority: ?float, alternates: list<array{hreflang: string, url: string}>, images: list<array{loc: string, title: ?string, caption: ?string, geoLocation: ?string, license: ?string}>, videos: list<array{thumbnailLoc: string, title: string, description: string, contentLoc: ?string, playerLoc: ?string, duration: ?int, publicationDate: ?string}>} $url
+     * @param array{loc: string, lastmod: ?string, changefreq: ?string, priority: ?float, alternates: list<array{hreflang: string, url: string}>, images: list<array{loc: string, title: ?string, caption: ?string, geoLocation: ?string, license: ?string}>, videos: list<array{thumbnailLoc: string, title: string, description: string, contentLoc: ?string, playerLoc: ?string, duration: ?int, publicationDate: ?string}>, news: list<array{publicationName: string, publicationLanguage: string, publicationDate: string, title: string, access: ?string, genres: ?string, keywords: ?string, stockTickers: ?string}>} $url
      */
     private function writeUrlEntry(XMLWriter $writer, array $url, bool $declareAlternateNamespace): void
     {
@@ -496,6 +623,9 @@ final readonly class SitemapXmlStringRenderer
         }
         if ($declareAlternateNamespace && $url['videos'] !== []) {
             $writer->writeAttribute('xmlns:video', 'http://www.google.com/schemas/sitemap-video/1.1');
+        }
+        if ($declareAlternateNamespace && $url['news'] !== []) {
+            $writer->writeAttribute('xmlns:news', 'http://www.google.com/schemas/sitemap-news/0.9');
         }
         $writer->writeElement('loc', $url['loc']);
 
@@ -548,6 +678,28 @@ final readonly class SitemapXmlStringRenderer
             }
             if ($video['publicationDate'] !== null) {
                 $writer->writeElement('video:publication_date', $video['publicationDate']);
+            }
+            $writer->endElement();
+        }
+        foreach ($url['news'] as $newsEntry) {
+            $writer->startElement('news:news');
+            $writer->startElement('news:publication');
+            $writer->writeElement('news:name', $newsEntry['publicationName']);
+            $writer->writeElement('news:language', $newsEntry['publicationLanguage']);
+            $writer->endElement();
+            $writer->writeElement('news:publication_date', $newsEntry['publicationDate']);
+            $writer->writeElement('news:title', $newsEntry['title']);
+            if ($newsEntry['access'] !== null) {
+                $writer->writeElement('news:access', $newsEntry['access']);
+            }
+            if ($newsEntry['genres'] !== null) {
+                $writer->writeElement('news:genres', $newsEntry['genres']);
+            }
+            if ($newsEntry['keywords'] !== null) {
+                $writer->writeElement('news:keywords', $newsEntry['keywords']);
+            }
+            if ($newsEntry['stockTickers'] !== null) {
+                $writer->writeElement('news:stock_tickers', $newsEntry['stockTickers']);
             }
             $writer->endElement();
         }
