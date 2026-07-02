@@ -83,6 +83,7 @@ final class SeoValidationBatchReportBuilder
         $errorCount = 0;
         $warningCount = 0;
         $infoCount = 0;
+        /** @var non-empty-list<int> $scores */
         $scores = [];
 
         foreach ($reports as $report) {
